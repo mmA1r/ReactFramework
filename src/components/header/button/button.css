@@ -19,7 +19,7 @@
 }
 
 .active {
-    background: linear-gradient(180deg, rgba(204, 170, 131, 0) 0%, rgba(250, 184, 153, 0.274) 100%);
-    border-color: #facbb5a8;
-    color: #ffdbca;
+    background: linear-gradient(180deg, rgba(204, 158, 131, 0) 0%, rgba(255, 166, 150, 0.226) 100%);
+    border-color: #ffc0b5a8;
+    color: #ffe4dc;
 }
