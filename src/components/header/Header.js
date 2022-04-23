@@ -12,7 +12,7 @@ class Header extends React.Component {
 
     setActiveButton(name) {
         this.setState({activePage : name});
-        this.setActiveButtonCb(this.state.activeButton);
+        this.setActiveButtonCb(name);
     }
 
     render() {
