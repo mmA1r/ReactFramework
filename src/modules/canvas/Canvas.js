@@ -71,6 +71,18 @@ class Canvas {
         this.context.closePath();
         this.context.fill();
     }
+    
+    integrall(points, color) {
+        this.context.fillStyle = color;
+        this.context.beginPath();
+        this.context.moveTo(this.xs(points[0].x), this.ys(points[0].y));
+        for(let i = 1; i < points.length; i++) {
+            this.context.lineTo(this.xs(points[i].x), this.ys(points[i].y));
+        }
+        this.context.lineTo(this.xs(points[0].x), this.ys(points[0].y));
+        this.context.closePath();
+        this.context.fill();
+    }
 }
 
 export default Canvas;
