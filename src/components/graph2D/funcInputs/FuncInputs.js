@@ -1,5 +1,9 @@
 import React from "react";
 
+import '../css/funcInputs.css'
+import '../css/heart.css'
+import '../css/deleteButton.css'
+
 class FuncInputs extends React.Component {
     constructor(props) {
         super(props);
@@ -17,9 +21,7 @@ class FuncInputs extends React.Component {
             this.func.f = f;
             this.func.value = e.target.value;
             this.run();
-        } catch (e) {
-            //console.log(e);
-        }
+        } catch (e) { }
     }
 
     setColor(e) {
@@ -46,34 +48,42 @@ class FuncInputs extends React.Component {
         return (
             <div>
                 <input // function
+                    className = "funcInputs"
                     onKeyUp = {(e) => this.setFunction(e)}
                     placeholder = "y = f(x)"
                     defaultValue = { this.func.value }
                 ></input>
                 <input // color
+                    className = "funcInputs"
                     onKeyUp = {(e) => this.setColor(e)} 
                     placeholder = "color"
                     defaultValue = { this.func.color }
                 ></input>
                 <input // width
+                    className = "funcInputs"
                     onKeyUp = {(e) => this.setWidth(e)}
                     placeholder = "width"
                     defaultValue = { this.func.width }
                 ></input>
                 <input //start Line
+                    className = "funcInputs"
                     onKeyUp = {(e) => this.sLine(e)}
                     placeholder = "Start Line"
                     defaultValue = { this.func.sLine }
                 ></input>
                 <input // end Line
+                    className = "funcInputs"
                     onKeyUp = {(e) => this.eLine(e)}
                     placeholder = "End Line"
                     defaultValue = { this.func.eLine }
                 ></input>
                 <button // delete function`s inputs
+                    className = "deleteButton"
                     onClick = {(index) => this.delFunction(index)}
-                >Delete</button>
-                <input className = "derevateCheck" // checkbox for derevative
+                >Delete
+                </button>
+                <input  // checkbox for derevative
+                    className = "derevateCheck"
                     type = 'checkbox'
                     onClick = {() => this.func.isDerivative = !this.func.isDerivative}
                     defaultChecked = { this.func.isDerivative ? true : false }

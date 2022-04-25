@@ -1,0 +1,17 @@
+.funcInputs {
+    margin-bottom: 5px;
+    padding-left: 15px;
+    background-color: transparent;
+    outline: none;
+    border: none;
+    border-bottom: 3px solid #a1adc7;
+    color: rgb(255, 255, 255);
+    max-width: 75px;
+}
+::-webkit-input-placeholder {
+    color: rgb(133, 133, 133);
+}
+.funcInputs:focus {
+    border-bottom: 3px solid #ffc7b0;
+    box-shadow: 0 4px 4px -4px #ffd7c7;
+}

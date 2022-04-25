@@ -1,7 +1,11 @@
 import React from "react";
 import Canvas from "../../modules/canvas/Canvas";
 import Math2D from "../../modules/Math/Math2D";
+import Print2D from "../../modules/canvas/Print2D";
 import UI from "./ui/UI";
+
+import './css/graph2D.css'
+import './css/canvas2D.css'
 
 class Graph2D extends React.Component {
     constructor(props) {
@@ -12,6 +16,7 @@ class Graph2D extends React.Component {
             WIDTH: 20,
             HEIGHT: 20
         };
+
         this.funcs = [];
         this.state = { funcsLength: this.funcs.length };
         this.derevativeX = 0;
@@ -25,6 +30,10 @@ class Graph2D extends React.Component {
             height: 700,
             width: 700
         });
+        this.print = new Print2D({
+            WIN: this.WIN,
+            canvas: this.canvas
+        })
         this.math = new Math2D({
             WIN: this.WIN,
             canvas: this.canvas
@@ -36,9 +45,9 @@ class Graph2D extends React.Component {
         this.funcs.push({
             f: () => null,
             color: 'red',
-            width: 2,
-            sLine: 0,
-            eLine: 0,
+            width: 1,
+            sLine: null,
+            eLine: null,
             isDerivative: false
         });
         this.setState({ funcsLength: this.funcs.length });
@@ -81,7 +90,7 @@ class Graph2D extends React.Component {
 
     run() {
         this.canvas.clear();
-        this.math.printXY();
+        this.print.printXY();
         //functions
         this.funcs.forEach(f => {
             if (f) {
@@ -119,7 +128,7 @@ class Graph2D extends React.Component {
     render() {
         return (
             <div className = "graph2D">
-                <canvas 
+                <canvas className = "canvas2D"
                     id = "graph2DCanvas"
                     onMouseDown = {() => this.canMove = true}
                     onMouseUp = {() => this.canMove = false}

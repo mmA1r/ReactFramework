@@ -1,6 +1,9 @@
 import React from "react";
 import FuncInputs from "../funcInputs/FuncInputs";
 
+import '../css/ui.css'
+import '../css/addFunction.css'
+
 class UI extends React.Component {
     constructor(props) {
         super(props);
@@ -13,8 +16,11 @@ class UI extends React.Component {
 
     render() {
         return (
-            <div>
-                <button onClick = {() => this.addFunction()}>Add Function</button>
+            <div className = "ui">
+                <button
+                    className = "addFunctionButton"
+                    onClick = {() => this.addFunction()}
+                >Add Function</button>
                 <div>
                     { this.funcs.map((func, index) =>
                         <FuncInputs 

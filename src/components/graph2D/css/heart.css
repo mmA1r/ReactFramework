@@ -1,0 +1,37 @@
+.derevateCheck {
+    margin-top: 10px;
+    margin-left: 10px;
+    height: 15px;
+    width: 15px;
+    border: none;
+    background-color: white;
+    position: relative;
+    outline: none;
+    transform: rotate(45deg);
+    -webkit-appearance: none;
+}
+.derevateCheck:before {
+    position: absolute;
+    content: "";
+    background-color: white;
+    height: 60%;
+    width: 100%;
+    top: -55%;
+    border-radius: 75px 75px 0 0;
+}
+.derevateCheck::after {
+    position: absolute;
+    content: "";
+    background-color: white;
+    height: 60%;
+    width: 100%;
+    transform: rotate(-90deg);
+    border-radius: 75px 75px 0 0;
+    top: 20%;
+    right: 75%;
+}
+.derevateCheck:checked,
+.derevateCheck:checked:before,
+.derevateCheck:checked:after {
+    background-color: rgb(255, 101, 101);
+}
