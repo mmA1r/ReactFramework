@@ -27,8 +27,6 @@ class Graph2D extends React.Component {
         this.canvas = new Canvas({
             id: 'graph2DCanvas',
             WIN: this.WIN,
-            height: 700,
-            width: 700
         });
         this.print = new Print2D({
             WIN: this.WIN,
@@ -44,7 +42,7 @@ class Graph2D extends React.Component {
     addFunction() {
         this.funcs.push({
             f: () => null,
-            color: 'red',
+            color: '#ff0000',
             width: 1,
             sLine: null,
             eLine: null,

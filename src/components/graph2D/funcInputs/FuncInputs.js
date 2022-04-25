@@ -53,12 +53,6 @@ class FuncInputs extends React.Component {
                     placeholder = "y = f(x)"
                     defaultValue = { this.func.value }
                 ></input>
-                <input // color
-                    className = "funcInputs"
-                    onKeyUp = {(e) => this.setColor(e)} 
-                    placeholder = "color"
-                    defaultValue = { this.func.color }
-                ></input>
                 <input // width
                     className = "funcInputs"
                     onKeyUp = {(e) => this.setWidth(e)}
@@ -76,6 +70,12 @@ class FuncInputs extends React.Component {
                     onKeyUp = {(e) => this.eLine(e)}
                     placeholder = "End Line"
                     defaultValue = { this.func.eLine }
+                ></input>
+                <input // color
+                    type = 'color'
+                    className = "colorSelectors"
+                    onChange = {(e) => this.setColor(e)} 
+                    defaultValue = { this.func.color }
                 ></input>
                 <button // delete function`s inputs
                     className = "deleteButton"
