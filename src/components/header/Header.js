@@ -18,7 +18,7 @@ class Header extends React.Component {
     render() {
         return (
             <div key = { this.state.activePage }
-                className="header"
+                className = "header"
             >
                 <Button // calculator
                     title = "Calculator"

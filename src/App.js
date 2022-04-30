@@ -9,7 +9,7 @@ import './App.css';
 
 function App() {
 
-  const [activePage, setActiveButton] = useState('graph2D');
+  const [activePage, setActiveButton] = useState('');
 
   return (
     <div className = "App">

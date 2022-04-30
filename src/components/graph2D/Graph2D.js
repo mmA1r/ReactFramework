@@ -4,8 +4,8 @@ import Math2D from "../../modules/Math/Math2D";
 import Print2D from "../../modules/canvas/Print2D";
 import UI from "./ui/UI";
 
-import './css/graph2D.css'
-import './css/canvas2D.css'
+import './graph2D.css'
+import './canvas2D.css'
 
 class Graph2D extends React.Component {
     constructor(props) {
@@ -87,7 +87,7 @@ class Graph2D extends React.Component {
     }
 
     run() {
-        this.canvas.clear();
+        this.canvas.transparentClear();
         this.print.printXY();
         //functions
         this.funcs.forEach(f => {
@@ -126,7 +126,8 @@ class Graph2D extends React.Component {
     render() {
         return (
             <div className = "graph2D">
-                <canvas className = "canvas2D"
+                <canvas 
+                    className = "canvas2D"
                     id = "graph2DCanvas"
                     onMouseDown = {() => this.canMove = true}
                     onMouseUp = {() => this.canMove = false}

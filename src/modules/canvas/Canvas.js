@@ -31,11 +31,16 @@ class Canvas {
         return -y * this.WIN.HEIGHT / this.canvas.height;
     }
 
-    clear () {
+    transparentClear () {
         this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
         this.context.fillStyle ="transparent";
         this.context.fillRect(0, 0, this.canvas.width, this.canvas.height);
     };
+
+    clear() {
+        this.context.fillStyle = "#eee";
+        this.context.fillRect(0, 0, this.canvas.width, this.canvas.height);
+    }
 
     line (x1, y1, x2, y2, colour = 'red', width = 2, isDash) {
         this.context.beginPath();

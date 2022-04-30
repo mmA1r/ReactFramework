@@ -1,8 +1,8 @@
 import React from "react";
 import FuncInputs from "../funcInputs/FuncInputs";
 
-import '../css/ui.css'
-import '../css/addFunction.css'
+import './ui.css'
+import './addFunction.css'
 
 class UI extends React.Component {
     constructor(props) {

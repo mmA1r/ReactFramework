@@ -1,8 +1,8 @@
 import React from "react";
 
-import '../css/funcInputs.css'
-import '../css/heart.css'
-import '../css/deleteButton.css'
+import './funcInputs.css'
+import './heart.css'
+import './deleteButton.css'
 
 class FuncInputs extends React.Component {
     constructor(props) {
