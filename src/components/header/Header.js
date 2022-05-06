@@ -5,8 +5,8 @@ import "./header.css"
 class Header extends React.Component {
     constructor(props) {
         super(props);
-        const { activePage, setActiveButton} = props;
-        this.state = { activePage }
+        const { activePage, setActiveButton } = props;
+        this.state = { activePage}
         this.setActiveButtonCb = setActiveButton;
     }
 
@@ -17,7 +17,8 @@ class Header extends React.Component {
 
     render() {
         return (
-            <div key = { this.state.activePage }
+            <div 
+                key = { this.state.activePage }
                 className = "header"
             >
                 <Button // calculator

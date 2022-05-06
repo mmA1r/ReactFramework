@@ -14,7 +14,7 @@ class FuncInputs extends React.Component {
     }
 
     setFunction(e) {
-        try{
+        try {
             let f;
             //eslint-disable-next-line
             eval(`f = function (x) {return ${e.target.value};}`);
@@ -26,7 +26,7 @@ class FuncInputs extends React.Component {
 
     setColor(e) {
         this.func.color = e.target.value;
-        this.run();        
+        this.run();
     }
 
     setWidth(e) {

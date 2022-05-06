@@ -1,10 +1,15 @@
 class Canvas {
-    constructor({ id, WIN, width = 700, height = 700 }) {
+    constructor({ id, WIN, width = window.innerWidth, height = window.innerHeight }) {
         this.WIN = WIN;
         this.canvas = document.getElementById(id);
         this.canvas.width = width;
         this.canvas.height = height;
         this.context = this.canvas.getContext('2d');
+    }
+
+    resize() {
+        this.canvas.width = window.innerWidth;
+        this.canvas.height = window.innerHeight;
     }
 
     xs (x) {

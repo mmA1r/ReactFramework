@@ -49,7 +49,7 @@ class Graph3D extends React.Component {
         this.dy = 0;
         this.canMove = false;
 
-        const Sun = sphere(20, 40, new Point, '#ffbc1a', [
+        const Sun = sphere(20, 40, new Point(0, 0, 0), '#ffbc1a', [
             { // Self Rotate
                 method: 'rotateOx',
                 value: -Math.PI / 360
@@ -62,7 +62,7 @@ class Graph3D extends React.Component {
             }, { // Center Rotate
                 method: 'rotateOx',
                 value: Math.PI / 90,
-                center: new Point,
+                center: new Point(0, 0, 0),
             },
         ]);
         const Venus = sphere(1.2, 20, new Point(30, 0, 0), '#c7a555', [
@@ -72,7 +72,7 @@ class Graph3D extends React.Component {
             }, { // Center Rotate
                 method: 'rotateOx',
                 value: Math.PI / 120,
-                center: new Point,
+                center: new Point(0, 0, 0),
             },
         ]);
         const Earth = sphere(3, 20, new Point(-45, 0, 0), '#00c1ff', [
@@ -83,7 +83,7 @@ class Graph3D extends React.Component {
             { // Center Rotate
                 method: 'rotateOx',
                 value: Math.PI / 180,
-                center: new Point,
+                center: new Point(0, 0, 0),
                 moveJoined: true
             },
         ]);
@@ -105,7 +105,7 @@ class Graph3D extends React.Component {
             }, { // Center Rotate
                 method: 'rotateOx',
                 value: Math.PI / 210,
-                center: new Point,
+                center: new Point(0, 0, 0),
             },
         ]);
         const Jupiter = sphere(10, 40, new Point(75, 0, 0), '#e1dab8', [
@@ -115,7 +115,7 @@ class Graph3D extends React.Component {
             }, { // Center Rotate
                 method: 'rotateOx',
                 value: Math.PI / 360,
-                center: new Point,
+                center: new Point(0, 0, 0),
             },
         ]);
         const Saturn = sphere(9, 40, new Point(-90, 0, 0), '#b59e68', [
@@ -125,7 +125,7 @@ class Graph3D extends React.Component {
             }, { // Center Rotate
                 method: 'rotateOx',
                 value: Math.PI / 450,
-                center: new Point,
+                center: new Point(0, 0, 0),
             },
         ]);
         const Uranus = sphere(6, 30, new Point(120, 0, 0), '#2688f5', [
@@ -135,7 +135,7 @@ class Graph3D extends React.Component {
             }, { // Center Rotate
                 method: 'rotateOx',
                 value: Math.PI / 510,
-                center: new Point,
+                center: new Point(0, 0, 0),
             },
         ]);
         const Neptune = sphere(5, 30, new Point(-170, 0, 0), '#5bebed', [
@@ -145,7 +145,7 @@ class Graph3D extends React.Component {
             }, { // Center Rotate
                 method: 'rotateOx',
                 value: Math.PI / 650,
-                center: new Point,
+                center: new Point(0, 0, 0),
             },
         ]);
 
@@ -198,17 +198,6 @@ class Graph3D extends React.Component {
         ];
     }
 
-    // requestAnimFrame = (() => {
-    //     return window.requestAnimationFrame ||
-    //         window.webkitRequestAnimationFrame ||
-    //         window.mozRequestAnimationFrame ||
-    //         window.oRequestAnimationFrame ||
-    //         window.msRequestAnimationFrame ||
-    //         function (callback) {
-    //             window.setTimeout(callback, 1000 / 60);
-    //         };
-    // })();
-
     componentDidMount() {
         this.canvas = new Canvas({
             id: 'graph3DCanvas',
@@ -239,13 +228,12 @@ class Graph3D extends React.Component {
             if (this.isAnimationAllow) {
                 this.figuresAnimantion(this.animations);
             }
-            // this.math.calcPlane();
-            // this.math.calcWindowVectors();
+            this.math.calcPlane();
+            this.math.calcWindowVectors();
             this.run(this.figures);
-            //this.requestAnimFrame(animLoop);
+            window.requestAnimFrame(animLoop);
         }
         animLoop();
-        this.run(this.figures);
     }
 
     //Animations
@@ -305,11 +293,11 @@ class Graph3D extends React.Component {
         this.math.transform(matrix, this.WIN.P1);
         this.math.transform(matrix, this.WIN.P2);
         this.math.transform(matrix, this.WIN.P3);
-        this.run(this.figures)
     }
 
     keyDownHandler(e) {
         //console.log(event.keyCode)
+        //eslint-disable-next-lin
         switch (e.keyCode) {
             case 65: // key a
                 return this.transformCamera(this.math.rotateOx(Math.PI / 180));
@@ -344,6 +332,8 @@ class Graph3D extends React.Component {
         this.run(this.figures)
     }
 
+
+    //Вынести в компонент
     selectFigure() {
         const selectBox = document.getElementById('figures');
         if(selectBox.options[selectBox.selectedIndex].text === 'solarSystem') {
@@ -351,22 +341,23 @@ class Graph3D extends React.Component {
         } else {
             this.figures = [this.figure[selectBox.options[selectBox.selectedIndex].text]];
         }
-        this.run(this.figures)
     }
 
+
+    //Вынести в компонент
     selectColor() {
         this.figures.forEach(figure => {
             figure.polygons.forEach(polygon => {
                 polygon.colour = polygon.hexToRgb(document.getElementById('colorSelector').value);
             });
         });
-        this.run(this.figures)
     }
 
+
+    //Вынести в компонент
     powerOfLight() {
         this.SUNLIGHT.lumen = document.getElementById('powerOfLight').value;
         this.LIGHT.lumen = document.getElementById('powerOfLight').value;
-        this.run(this.figures);
     }
     
     run(figures) {

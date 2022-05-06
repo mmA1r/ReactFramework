@@ -7,6 +7,17 @@ import Game from './components/game/Game';
 import { useState } from 'react';
 import './App.css';
 
+window.requestAnimFrame = (() => {
+  return window.requestAnimationFrame ||
+      window.webkitRequestAnimationFrame ||
+      window.mozRequestAnimationFrame ||
+      window.oRequestAnimationFrame ||
+      window.msRequestAnimationFrame ||
+      function (callback) {
+          window.setTimeout(callback, 1000 / 60);
+      };
+})();
+
 function App() {
 
   const [activePage, setActiveButton] = useState('');
@@ -15,7 +26,7 @@ function App() {
     <div className = "App">
       <Header
         activePage = { activePage }
-        setActiveButton = {(name) => setActiveButton(name)}
+        setActiveButton = { (name) => setActiveButton(name) }
       ></Header>
       {
         activePage === 'calculator' ? <Calculator></Calculator> : 

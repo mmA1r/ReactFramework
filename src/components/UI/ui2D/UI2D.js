@@ -1,22 +1,22 @@
 import React from "react";
-import FuncInputs from "../funcInputs/FuncInputs";
+import FuncInputs from "./funcInputs/FuncInputs";
 
-import './ui.css'
+import './ui2D.css'
 import './addFunction.css'
 
-class UI extends React.Component {
+class UI2D extends React.Component {
     constructor(props) {
         super(props);
         const { funcs, addFunction, delFunction, run } = props;
+        this.funcs = funcs;
         this.addFunction = addFunction;
         this.delFunction = delFunction;
-        this.funcs = funcs;
         this.run = run;
     }
 
     render() {
         return (
-            <div className = "ui">
+            <div className = "ui2D">
                 <button
                     className = "addFunctionButton"
                     onClick = {() => this.addFunction()}
@@ -36,4 +36,4 @@ class UI extends React.Component {
     }
 }
 
-export default UI;
+export default UI2D;

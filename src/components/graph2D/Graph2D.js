@@ -1,8 +1,7 @@
 import React from "react";
 import Canvas from "../../modules/canvas/Canvas";
 import Math2D from "../../modules/Math/Math2D";
-import Print2D from "../../modules/canvas/Print2D";
-import UI from "./ui/UI";
+import UI from "../UI/UI";
 
 import './graph2D.css'
 import './canvas2D.css'
@@ -11,14 +10,13 @@ class Graph2D extends React.Component {
     constructor(props) {
         super(props);
         this.WIN = {
-            LEFT: -10,
-            BOTTOM: -10,
-            WIDTH: 20,
-            HEIGHT: 20
+            LEFT: -15,
+            BOTTOM: -15,
+            WIDTH: 30,
+            HEIGHT: 30
         };
 
         this.funcs = [];
-        this.state = { funcsLength: this.funcs.length };
         this.derevativeX = 0;
         this.canMove = false;
     }
@@ -28,33 +26,15 @@ class Graph2D extends React.Component {
             id: 'graph2DCanvas',
             WIN: this.WIN,
         });
-        this.print = new Print2D({
-            WIN: this.WIN,
-            canvas: this.canvas
-        })
         this.math = new Math2D({
             WIN: this.WIN,
             canvas: this.canvas
         });
-        this.run();
-    }
-
-    addFunction() {
-        this.funcs.push({
-            f: () => null,
-            color: '#ff0000',
-            width: 1,
-            sLine: null,
-            eLine: null,
-            isDerivative: false
-        });
-        this.setState({ funcsLength: this.funcs.length });
-    }
-
-    deleteFunction(index) {
-        this.funcs.splice(index, 1);
-        this.setState({ funcsLength: this.funcs.length });
-        this.run();
+        const animLoop = () => {
+            this.run();
+            window.requestAnimFrame(animLoop);
+        }
+        animLoop();
     }
 
     mouseMove(e) {
@@ -63,7 +43,7 @@ class Graph2D extends React.Component {
           this.WIN.BOTTOM -= this.canvas.sy(e.nativeEvent.movementY);
         }
         this.derevativeX = this.WIN.LEFT + this.canvas.sx(e.nativeEvent.offsetX);
-        this.run()
+        this.run();
     }
 
     wheel(e) {
@@ -77,6 +57,54 @@ class Graph2D extends React.Component {
         this.run();
     }
 
+    printXY () {
+        const { LEFT, BOTTOM, WIDTH, HEIGHT } = this.WIN;
+        //XY
+        this.canvas.line(0, BOTTOM,0, HEIGHT + BOTTOM,'black');
+        this.canvas.line(LEFT, 0, WIDTH + LEFT, 0,'black');
+        //Arrows
+        this.canvas.line(WIDTH + LEFT, 0, WIDTH + LEFT - 0.4, 0.15,'black', 1.5);
+        this.canvas.line(WIDTH + LEFT, 0, WIDTH + LEFT - 0.4, -0.15,'black', 1.5);
+        this.canvas.line(0, HEIGHT + BOTTOM,-0.15, HEIGHT + BOTTOM - 0.4,'black', 1.5);
+        this.canvas.line(0, HEIGHT + BOTTOM, 0.15, HEIGHT + BOTTOM - 0.4,'black', 1.5);
+        //Text
+        this.canvas.text('0', 0.5, -0.7);
+        this.canvas.text('1', 1, 1);
+        this.canvas.text('-1', -1, -1);
+        this.canvas.text('x', WIDTH + LEFT - 0.4, -0.5);
+        this.canvas.text('y', 0.5, HEIGHT + BOTTOM - 1);
+        //Lines
+        for(let i = 0; i < HEIGHT + BOTTOM; i ++) {
+            this.canvas.line (-0.2, i, 0.2, i, 'black', 1);
+        }
+        for(let i = 0; i > BOTTOM; i --) {
+            this.canvas.line (-0.2, i, 0.2, i, 'black', 1);
+        }
+        for(let i = 0; i < WIDTH + LEFT; i ++) {
+            this.canvas.line (i, -0.2, i, 0.2, 'black', 1);
+        }
+        for(let i = 0; i > LEFT; i --) {
+            this.canvas.line(i, -0.2, i, 0.2,'black', 1);
+        }
+        //Net
+        for(let i = 0; i > LEFT; i --){
+            this.canvas.line (i, BOTTOM + LEFT, i, HEIGHT + BOTTOM,'black', 0.3);
+        }
+        for(let i = 0; i < HEIGHT + LEFT - BOTTOM + WIDTH; i++) {
+            this.canvas.line (i, BOTTOM, i, 0,'black', 0.3);
+        }
+        for(let i = 0; i < HEIGHT + LEFT + BOTTOM + WIDTH; i++) {
+            this.canvas.line (i, 0, i, HEIGHT + BOTTOM,'black', 0.3);
+            this.canvas.line (LEFT, i, HEIGHT + LEFT, i, 'black', 0.3);
+        }
+        for(let i = 0; i > BOTTOM; i --) {
+            this.canvas.line (LEFT + BOTTOM, i, WIDTH + LEFT, i, 'black', 0.3);
+        }
+        for(let i = 0; i < HEIGHT - LEFT + BOTTOM + WIDTH; i ++) {
+            this.canvas.line (LEFT, i, 0, i, 'black', 0.3);
+        }
+    }
+
     printFunction(f, color, width) {
         let x = this.WIN.LEFT;
         const dx = this.WIN.WIDTH / 1000;
@@ -87,8 +115,9 @@ class Graph2D extends React.Component {
     }
 
     run() {
+        this.canvas.resize();
         this.canvas.transparentClear();
-        this.print.printXY();
+        this.printXY();
         //functions
         this.funcs.forEach(f => {
             if (f) {
@@ -126,6 +155,11 @@ class Graph2D extends React.Component {
     render() {
         return (
             <div className = "graph2D">
+                <UI
+                    name = "graph2D"
+                    funcs = { this.funcs }
+                    run = {() => this.run()}
+                ></UI>
                 <canvas 
                     className = "canvas2D"
                     id = "graph2DCanvas"
@@ -135,13 +169,6 @@ class Graph2D extends React.Component {
                     onMouseMove = {(e) => this.mouseMove(e)}
                     onWheel = {(e) => this.wheel(e)}
                 ></canvas>
-                <UI
-                    key = { this.state.funcsLength }
-                    funcs = { this.funcs }
-                    addFunction = {() => this.addFunction()}
-                    delFunction = {() => this.deleteFunction()}
-                    run = { () => this.run() }
-                ></UI>
             </div>
         );
     }
