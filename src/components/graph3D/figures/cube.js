@@ -3,7 +3,7 @@ import Point from '../Entities/Point';
 import Edge from '../Entities/Edge';
 import Polygon from '../Entities/Polygon';
 
-function cube (lenght = 10, lenMult = 1, color = '#ff00ff', widMult = 1, center = new Point, name = 'cube', animations) {
+function cube (lenght = 10, lenMult = 1, color = '#ff00ff', widMult = 1, center = new Point(0, 0, 0), name = 'cube', animations) {
     const points = [
         new Point((lenght + center.x) * widMult, (lenght + center.z) * lenMult, lenght + center.y),
         new Point((lenght + center.x) * widMult, (lenght + center.z) * lenMult, -lenght + center.y),

@@ -6,7 +6,7 @@ import Polygon from '../Entities/Polygon';
 function sphere (
     R = 10, 
     count = 20,
-    center = new Point, 
+    center = new Point(0, 0, 0), 
     color,
     animations,
     name = 'sphere'

@@ -7,7 +7,7 @@ class Subject {
         polygons = [], 
         name = '', 
         animations = [], 
-        center = new Point, 
+        center = new Point(0, 0, 0), 
     ) {
         this.points = points;
         this.edges = edges;
