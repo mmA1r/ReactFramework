@@ -1,0 +1,16 @@
+.deleteButton {
+    border: 1.5px solid;
+    background: linear-gradient(180deg, rgba(131, 157, 204, 0.24) 0%, rgba(137, 171, 211, 0.11) 100%);
+    color: rgb(255, 255, 255);
+    text-align: center;
+    font-size: 14px;
+    border-radius: 2px;
+    width: 74px;
+    margin: 5px 10px 10px 15px;
+}
+.deleteButton:hover {
+    background: transparent;
+    border-color: #ffded4;
+    color: #ffded4;
+    transition: 0.3s;
+}

@@ -1,0 +1,41 @@
+@keyframes showLeft {
+    from { left: -50%; }
+    to { left: 0; }
+}
+
+.ui {
+    position: fixed;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: max-content;
+
+    z-index: 0
+}
+
+.uiVisible {
+    position: fixed;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: max-content;
+    z-index: 2;
+}
+
+.isVisible {
+    position: fixed;
+    left: 0;
+    width: 30%;
+    height: 100%;
+    background-color: #36405f;
+
+    opacity: 0;
+
+    z-index: 1;
+}
+
+.visible {
+    transition: 1s;
+    animation: showLeft 0.8s;
+    opacity: 1;
+}
