@@ -16,7 +16,7 @@ class ColorSelector extends React.Component {
                     onChange = {() => this.selectColor()}
                     id = "colorSelector"
                     type = "color"
-                    value = "#ff00c8"
+                    defaultValue = "#ff00c8"
                 ></input>
             </div>
         );

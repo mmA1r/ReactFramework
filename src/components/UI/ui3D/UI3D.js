@@ -32,30 +32,6 @@ class UI3D extends React.Component {
         this.setState({ [name]: !this.state[name] });
     }
 
-    setPoints() {
-        return `optionButton ${this.state.points ? 'active' : ''}`
-    }
-
-    setEdges() {
-        return `optionButton ${this.state.edges ? 'active' : ''}`
-    }
-
-    setPolygons() {
-        return `optionButton ${this.state.polygons ? 'active' : ''}`
-    }
-
-    setAnimation() {
-        return `optionButton ${this.state.animation ? 'active' : ''}`
-    }
-
-    setLight() {
-        return `optionButton ${this.state.light ? 'active' : ''}`
-    }
-
-    setSideLight() {
-        return `optionButton ${this.state.sideLight ? 'active' : ''}`
-    }
-
     render() {
         return (
             <div className = "ui3D">
@@ -64,14 +40,32 @@ class UI3D extends React.Component {
                 ></FigureSelector>
                 <div className = "options3D">
                     <div>
-                        <button className = {this.setPoints()} onClick = {() => {this.isPoints(); this.setName('points')}}>Points</button>
-                        <button className = {this.setEdges()} onClick = {() => {this.isEdges(); this.setName('edges')}}>Edges</button>
-                        <button className = {this.setPolygons()} onClick = {() => {this.isPolygons(); this.setName('polygons')}}>Polygons</button>
+                        <button  //Points
+                            className = {this.state.points ? 'optionButton active' : 'optionButton'} 
+                            onClick = {() => {this.isPoints(); this.setName('points')}
+                        }>Points</button>
+                        <button  //Edges
+                            className = {this.state.edges ? 'optionButton active' : 'optionButton'} 
+                            onClick = {() => {this.isEdges(); this.setName('edges')}
+                        }>Edges</button>
+                        <button  //Polygons
+                            className = {this.state.polygons ? 'optionButton active' : 'optionButton'} 
+                            onClick = {() => {this.isPolygons(); this.setName('polygons')}
+                        }>Polygons</button>
                     </div>
                     <div>
-                        <button className = {this.setLight()} onClick = {() => {this.isLight(); this.setName('light')}}>Light</button>
-                        <button className = {this.setSideLight()} onClick = {() => {this.isSideLight(); this.setName('sideLight')}}>SideLight</button>
-                        <button className = {this.setAnimation()} onClick = {() => {this.isAnimation(); this.setName('animation')}}>Animation</button>
+                        <button  //Light
+                            className = {this.state.light ? 'optionButton active' : 'optionButton'} 
+                            onClick = {() => {this.isLight(); this.setName('light')}
+                            }>Light</button>
+                        <button  //SideLight
+                            className = {this.state.sideLight ? 'optionButton active' : 'optionButton'} 
+                            onClick = {() => {this.isSideLight(); this.setName('sideLight')}
+                        }>SideLight</button>
+                        <button  //Animation
+                            className = {this.state.animation ? 'optionButton active' : 'optionButton'} 
+                            onClick = {() => {this.isAnimation(); this.setName('animation')}
+                        }>Animation</button>
                     </div>
                 </div>
                 <LightSelector
