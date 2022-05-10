@@ -39,12 +39,12 @@ class Header extends React.Component {
                     onClick = {(name) => this.setActiveButton(name)}
                     active = { this.state.activePage }
                 ></Button>
-                <Button // Billiards
+                {/* <Button // Billiards
                     title = "Game"
                     name = "game"
                     onClick = {(name) => this.setActiveButton(name)}
                     active = { this.state.activePage }
-                ></Button>
+                ></Button> */}
             </div>
         );
     }

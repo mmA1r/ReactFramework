@@ -1,0 +1,17 @@
+#colorSelector {
+    border: none;
+    padding: 0;
+    margin: 20% 5px 0 0;
+	width: 70px;
+	height: 70px;
+    overflow: hidden;
+    border-radius: 50%;
+    box-shadow: 1px 1px 1px 0px grey;
+}
+#colorSelector::-webkit-color-swatch-wrapper {
+	padding: 0%;
+    border: none;
+}
+#colorSelector::-webkit-color-swatch {
+	border: none;
+}

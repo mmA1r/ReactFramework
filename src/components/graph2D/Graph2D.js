@@ -4,7 +4,6 @@ import Math2D from "../../modules/Math/Math2D";
 import UI from "../UI/UI";
 
 import './graph2D.css'
-import './canvas2D.css'
 
 class Graph2D extends React.Component {
     constructor(props) {
@@ -158,7 +157,7 @@ class Graph2D extends React.Component {
                 <UI
                     name = "graph2D"
                     funcs = { this.funcs }
-                    run = {() => this.run()}
+                    run2D = {() => this.run()}
                 ></UI>
                 <canvas 
                     className = "canvas2D"

@@ -8,8 +8,8 @@ class Canvas {
     }
 
     resize() {
-        this.canvas.width = window.innerWidth;
-        this.canvas.height = window.innerHeight;
+        if(this.canvas.width !== window.innerWidth) {this.canvas.width = window.innerWidth};
+        if(this.canvas.height !== window.innerHeight) {this.canvas.height = window.innerHeight}
     }
 
     xs (x) {

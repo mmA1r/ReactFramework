@@ -1,6 +1,6 @@
 import React from "react";
 import UI2D from './ui2D/UI2D';
-import UI3D from './ui3D/UI3D';
+import UI3D from "./ui3D/UI3D";
 
 import './ui.css';
 import './uiButton.css';
@@ -9,12 +9,22 @@ import './uiButton.css';
 class UI extends React.Component {
     constructor(props) {
         super(props);
-        const { name, funcs, run } = props;
-        //graph2D
+        const { name, funcs = [], run2D, isPoints, isEdges, isPolygons, isAnimation, isLight, isSideLight, selectFigure, selectColor, selectLight } = props;
         this.name = name;
+        //graph2D
         this.funcs = funcs;
-        this.state = { showPanel: false, funcsLength: this.funcs.length};
-        this.run = run;
+        this.state = { showPanel: false, funcsLength: this.funcs.length, options: false};
+        this.run2D = run2D;
+        //graph3D
+        this.isPoints = isPoints;
+        this.isEdges = isEdges;
+        this.isPolygons = isPolygons;
+        this.isAnimation = isAnimation;
+        this.isLight = isLight;
+        this.isSideLight = isSideLight;
+        this.selectFigure = selectFigure;
+        this.selectColor = selectColor;
+        this.selectLight = selectLight;
     }
 
     addFunction() {
@@ -61,16 +71,27 @@ class UI extends React.Component {
                 </button>
                 
                 <div className = { this.setVisible() }>
-                    {this.name === "graph2D" ? 
+                    { this.name === "graph2D" ?          //2D
                         <UI2D
                             key = { this.state.funcsLength }
                             funcs = { this.funcs }
                             addFunction = {() => this.addFunction()}
                             delFunction = {(index) => this.delFunction(index)}
-                            run = {() => this.run()}
+                            run = {() => this.run2D()}
                         ></UI2D>
-                        : 
-                        <UI3D></UI3D>
+                    : this.name === "graph3D" ?     //3D
+                        <UI3D
+                            isPoints = {() => this.isPoints()}
+                            isEdges = {() => this.isEdges()}
+                            isPolygons = {() => this.isPolygons()}
+                            isAnimation = {() => this.isAnimation()}
+                            isLight = {() => this.isLight()}
+                            isSideLight = {() => this.isSideLight()}
+                            selectFigure = {() => this.selectFigure()}
+                            selectColor = {() => this.selectColor()}
+                            selectLight = {() => this.selectLight()}
+                        ></UI3D>
+                    : ''
                     }
                 </div>
             </div>

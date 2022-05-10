@@ -1,0 +1,56 @@
+.lightSelector {
+    display: inline-block;
+    color: #8fd6ff;
+    margin-top: 20%;
+    width: 80%;
+    user-select: none;
+}
+
+#powerOfLight {
+    -webkit-appearance: none;
+    background: transparent;
+    height: 10px;
+    width: 100%;
+    outline: none;
+    border: 1px solid #8fd6ff;
+    border-radius: 9px;
+    margin: 5% 0 10px 0;
+}
+
+#powerOfLight:hover {
+    border: 1px solid #ffb192e7;
+
+    transition: 0.2s;
+}
+
+#powerOfLight:active {
+    border: 1px solid #8d79ff;
+
+    transition: 0.4s;
+}
+
+#powerOfLight::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    cursor: pointer;
+
+    height: 20px;
+    width: 20px;
+
+    border-radius: 50%;
+
+    background: #8fd6ff;
+}
+
+#powerOfLight::-webkit-slider-thumb:hover {
+    background: #ffb192e7;
+
+    transition: 0.2s;
+}
+
+#powerOfLight::-webkit-slider-thumb:active {
+    border: 1px solid rgba(205, 255, 255, 0.425);
+
+    background: #8d79ff;
+
+    transition: 0.3s;
+}

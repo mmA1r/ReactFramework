@@ -1,30 +1,23 @@
 import React from "react";
 import Canvas from "../../modules/canvas/Canvas";
 import Math3D from "../../modules/Math/Math3D";
+import UI from "../UI/UI";
 
 import Light from "./Entities/Light";
 import Point from "./Entities/Point";
 
-import cube from "./figures/cube";
-import cone from "./figures/cone";
-import doubleHyperboloid from "./figures/doubleHyperboloid";
-import ellipsoid from "./figures/ellipsoid";
-import ellipticalCylinder from "./figures/ellipticalCylinder";
-import ellipticalParaboloid from "./figures/ellipticalParaboloid";
-import hyperbolicCylinder from "./figures/hyperbolicCylinder";
-import hyperbolicParaboloid from "./figures/hyperbolicParaboloid";
-import parabolicCylinder from "./figures/parabolicCylinder";
-import pyramid from "./figures/pyramid";
-import singleHyperboloid from "./figures/singleHyperboloid";
-import sphere from "./figures/sphere";
-import tor from "./figures/tor";
+import { 
+    cube, cone, doubleHyperboloid, ellipsoid, ellipticalCylinder, ellipticalParaboloid, hyperbolicCylinder, 
+    hyperbolicParaboloid, parabolicCylinder, pyramid, singleHyperboloid, sphere, tor 
+} from './figures';
 
 import './graph3D.css';
-import './canvas3D.css';
 
 class Graph3D extends React.Component {
     constructor(props) {
         super(props);
+        this.state = { showPanel: false};
+
         this.WIN = {
             LEFT: -10,
             BOTTOM: -10,
@@ -37,12 +30,11 @@ class Graph3D extends React.Component {
             DISPLAY: new Point(0, 0, 270)
         }
 
-
         this.isPointsAllow = false;
         this.isEdgesAllow = false;
         this.isPolygonsAllow = true;
-        this.lightAllow = true;
-        this.sideLightAllow = false;
+        this.lightAllow = false;
+        this.sideLightAllow = true;
         this.isAnimationAllow = false;
 
         this.dx = 0;
@@ -167,7 +159,7 @@ class Graph3D extends React.Component {
             tor: tor()
         }
 
-        this.figures = [this.figure.cube];
+        this.figures = [this.figure.sphere];
 
         this.animations = [
             {//Sun
@@ -296,7 +288,6 @@ class Graph3D extends React.Component {
     }
 
     keyDownHandler(e) {
-        //console.log(event.keyCode)
         //eslint-disable-next-lin
         switch (e.keyCode) {
             case 65: // key a
@@ -329,11 +320,9 @@ class Graph3D extends React.Component {
             y: this.WIN.CAMERA.y * delta, 
             z: this.WIN.CAMERA.z * delta
         }));
-        this.run(this.figures)
     }
 
-
-    //Вынести в компонент
+    //UI
     selectFigure() {
         const selectBox = document.getElementById('figures');
         if(selectBox.options[selectBox.selectedIndex].text === 'solarSystem') {
@@ -343,8 +332,6 @@ class Graph3D extends React.Component {
         }
     }
 
-
-    //Вынести в компонент
     selectColor() {
         this.figures.forEach(figure => {
             figure.polygons.forEach(polygon => {
@@ -353,17 +340,39 @@ class Graph3D extends React.Component {
         });
     }
 
-
-    //Вынести в компонент
-    powerOfLight() {
+    selectLight() {
         this.SUNLIGHT.lumen = document.getElementById('powerOfLight').value;
         this.LIGHT.lumen = document.getElementById('powerOfLight').value;
+    }
+
+    isPoints() {
+        return this.isPointsAllow = !this.isPointsAllow;
+    }
+
+    isEdges() {
+        return this.isEdgesAllow = !this.isEdgesAllow;
+    }
+
+    isPolygons() {
+        return this.isPolygonsAllow = !this.isPolygonsAllow;
+    }
+
+    isAnimation() {
+        this.isAnimationAllow = !this.isAnimationAllow;
+    }
+
+    isLight() {
+        return this.lightAllow = !this.lightAllow;
+    }
+
+    isSideLight() {
+        return this.sideLightAllow = !this.sideLightAllow;
     }
     
     run(figures) {
         this.math.calcPlane();
         this.math.calcWindowVectors();
-        this.canvas.clear();
+        this.canvas.transparentClear();
         //polygons
         if(this.isPolygonsAllow) {
             const polygons = [];
@@ -434,62 +443,30 @@ class Graph3D extends React.Component {
     render() {
         return (
             <div className = "graph3D">
-                <div>
-                    <button onClick = {() => this.lightAllow = !this.lightAllow}>Ligh</button>
-                    <button onClick = {() => this.sideLightAllow = !this.sideLightAllow}>Side Light</button>
-                    <button onClick = {() => this.isAnimationAllow = !this.isAnimationAllow}>Animation</button>
-                    <input
-                        onChange = {() => this.powerOfLight()}
-                        id = "powerOfLight"
-                        type = "range"
-                        min = "10000"
-                        max = "400000"
-                        step = "4000"
-                        defaultValue = "300000"
-                    ></input>
-                    <input
-                        onChange = {() => this.selectColor()}
-                        id = "colorSelector"
-                        type = "color"
-                        value = "#ff00c8"
-                    ></input>
-                </div>
-                <div className = "">
-                    <canvas
-                        className = "canvas3D"
-                        id = "graph3DCanvas"
-                        onMouseDown = {() => this.canMove = true}
-                        onMouseUp = {() => this.canMove = false}
-                        onMouseLeave = {() => this.canMove = false}
-                        onWheel = {(e) => this.wheel(e)}
-                        onKeyDown = {(e) => this.keyDownHandler(e)}
-                        tabIndex = "0"
-                    ></canvas>
-                    <button onClick = {() => {this.isPointsAllow = !this.isPointsAllow; this.run(this.figures)}}>Points</button>
-                    <button onClick = {() => {this.isEdgesAllow = !this.isEdgesAllow; this.run(this.figures)}}>Edges</button>
-                    <button onClick = {() => {this.isPolygonsAllow = !this.isPolygonsAllow; this.run(this.figures)}}>Polygons</button>
-                </div>
-                <div>
-                    <select
-                        id = "figures"
-                        onChange = {() => this.selectFigure()}
-                    >
-                        <option className = "options">cube</option>
-                        <option className = "options">cone</option>
-                        <option className = "options">pyramid</option>
-                        <option className = "options">sphere</option>
-                        <option className = "options">ellipsoid</option>
-                        <option className = "options">ellipticalCylinder</option>
-                        <option className = "options">ellipticalParaboloid</option>
-                        <option className = "options">hyperbolicCylinder</option>
-                        <option className = "options">hyperbolicParaboloid</option>
-                        <option className = "options">parabolicCylinder</option>
-                        <option className = "options">singleHyperboloid</option>
-                        <option className = "options">doubleHyperboloid</option>
-                        <option className = "options">tor</option>
-                        <option className = "options">solarSystem</option>
-                    </select>
-                </div>
+                <canvas
+                    className = "canvas3D"
+                    id = "graph3DCanvas"
+                    onMouseDown = {() => this.canMove = true}
+                    onMouseUp = {() => this.canMove = false}
+                    onMouseLeave = {() => this.canMove = false}
+                    onWheel = {(e) => this.wheel(e)}
+                    onKeyDown = {(e) => this.keyDownHandler(e)}
+                    tabIndex = "0"
+                ></canvas>
+                <UI
+                    name = "graph3D"
+                    //allows
+                    isPoints = {() => this.isPoints()}
+                    isEdges = {() => this.isEdges()}
+                    isPolygons = {() => this.isPolygons()}
+                    isAnimation = {() => this.isAnimation()}
+                    isLight = {() => this.isLight()}
+                    isSideLight = {() => this.isSideLight()}
+                    //options
+                    selectFigure = {() => this.selectFigure()}
+                    selectColor = {() => this.selectColor()}
+                    selectLight = {() => this.selectLight()}
+                ></UI>
             </div>
         );
     }
