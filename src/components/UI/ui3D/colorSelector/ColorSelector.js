@@ -1,26 +1,24 @@
-import React from "react";
-
+import { useRef } from 'react';
 import './color.css'
 
-class ColorSelector extends React.Component {
-    constructor(props) {
-        super(props);
-        const { selectColor } = props;
-        this.selectColor = selectColor;
-    }
+function ColorSelector (props) {
+    const { selectColor } = props;
 
-    render() {
-        return (
-            <div className = "colorSelector">
-                <input
-                    onChange = {() => this.selectColor()}
-                    id = "colorSelector"
-                    type = "color"
-                    defaultValue = "#ff00c8"
-                ></input>
-            </div>
-        );
-    }
+    const color = useRef(null);
+    const ColorOnChange = () => {color.current.focus()}
+
+    return (
+        <div className = "colorSelector">
+            <input
+                ref = { color }
+                onChange = {() => {ColorOnChange(); selectColor(color.current.value)}}
+                id = "colorSelector"
+                type = "color"
+                defaultValue = "#ff00c8"
+            ></input>
+        </div>
+    );
+
 }
 
 export default ColorSelector;

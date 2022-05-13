@@ -30,6 +30,8 @@
     padding-left: 20px;
     background-color: #36405f;
 
+    pointer-events: none;
+
     opacity: 0;
 
     z-index: 1;
@@ -39,4 +41,6 @@
     transition: 1s;
     animation: showLeft 0.8s;
     opacity: 1;
+
+    pointer-events: all;
 }

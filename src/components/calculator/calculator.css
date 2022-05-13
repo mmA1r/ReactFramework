@@ -28,6 +28,6 @@
     opacity: 1;
     transition: 0.3s;
 
-    background-color: white;
+    background-color: rgba(177, 182, 253, 0.719);
     padding: 3% 3% 5% 3%;
 }

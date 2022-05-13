@@ -1,4 +1,4 @@
-import React from "react";
+import { useEffect } from "react";
 import Canvas from "../../modules/canvas/Canvas";
 import Math3D from "../../modules/Math/Math3D";
 import UI from "../UI/UI";
@@ -13,236 +13,222 @@ import {
 
 import './graph3D.css';
 
-class Graph3D extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = { showPanel: false};
+function Graph3D () {
+    const WIN = {
+        LEFT: -10,
+        BOTTOM: -10,
+        WIDTH: 20,
+        HEIGHT: 20,
+        P1: new Point(-10, 10, 350), // upper-left corener
+        P2: new Point(-10, -10, 350), // lower-left corener
+        P3: new Point(10, -10, 350), // lower-right corener
+        CAMERA: new Point(0, 0, 350),
+        DISPLAY: new Point(0, 0, 270)
+    }
+    
+    let canvas;
+    let math;
+    let LIGHT;
+    let SUNLIGHT;
 
-        this.WIN = {
-            LEFT: -10,
-            BOTTOM: -10,
-            WIDTH: 20,
-            HEIGHT: 20,
-            P1: new Point(-10, 10, 350), // upper-left corener
-            P2: new Point(-10, -10, 350), // lower-left corener
-            P3: new Point(10, -10, 350), // lower-right corener
-            CAMERA: new Point(0, 0, 350),
-            DISPLAY: new Point(0, 0, 270)
+    let isPointsAllow = false;
+    let isEdgesAllow = false;
+    let isPolygonsAllow = true;
+    let lightAllow = false;
+    let sideLightAllow = true;
+    let isAnimationAllow = false;
+
+    let canMove = false;
+
+    const Sun = sphere(20, 40, new Point(0, 0, 0), '#ffbc1a', [
+        { // Self Rotate
+            method: 'rotateOx',
+            value: -Math.PI / 360
         }
-
-        this.isPointsAllow = false;
-        this.isEdgesAllow = false;
-        this.isPolygonsAllow = true;
-        this.lightAllow = false;
-        this.sideLightAllow = true;
-        this.isAnimationAllow = false;
-
-        this.dx = 0;
-        this.dy = 0;
-        this.canMove = false;
-
-        const Sun = sphere(20, 40, new Point(0, 0, 0), '#ffbc1a', [
-            { // Self Rotate
-                method: 'rotateOx',
-                value: -Math.PI / 360
-            }
-        ]);
-        const Mercury = sphere(1, 20, new Point(25, 0, 0), '#7b6036', [
-            { // Self Rotate
-                method: 'rotateOx',
-                value: Math.PI / 270
-            }, { // Center Rotate
-                method: 'rotateOx',
-                value: Math.PI / 90,
-                center: new Point(0, 0, 0),
-            },
-        ]);
-        const Venus = sphere(1.2, 20, new Point(30, 0, 0), '#c7a555', [
-            { // Self Rotate
-                method: 'rotateOx',
-                value: Math.PI / 300
-            }, { // Center Rotate
-                method: 'rotateOx',
-                value: Math.PI / 120,
-                center: new Point(0, 0, 0),
-            },
-        ]);
-        const Earth = sphere(3, 20, new Point(-45, 0, 0), '#00c1ff', [
-            { // Self Rotate
-                method: 'rotateOx',
-                value: Math.PI / 360,
-            }, 
-            { // Center Rotate
-                method: 'rotateOx',
-                value: Math.PI / 180,
-                center: new Point(0, 0, 0),
-                moveJoined: true
-            },
-        ]);
-        const Moon = sphere(0.5, 20, new Point(-53, 0, 0), '#ff0000', [
-            { // Self Rotate
-                method: 'rotateOx',
-                value: Math.PI / 360
-            }, 
-            { // Earth Rotate
-                method: 'rotateOx',
-                value: Math.PI / 180,
-                center: Earth.center
-            }
-        ]);
-        const Mars = sphere(2, 20, new Point(-55, 0, 0), '#ff0000', [
-            { // Self Rotate
-                method: 'rotateOx',
-                value: Math.PI / 390
-            }, { // Center Rotate
-                method: 'rotateOx',
-                value: Math.PI / 210,
-                center: new Point(0, 0, 0),
-            },
-        ]);
-        const Jupiter = sphere(10, 40, new Point(75, 0, 0), '#e1dab8', [
-            { // Self Rotate
-                method: 'rotateOx',
-                value: Math.PI / 430
-            }, { // Center Rotate
-                method: 'rotateOx',
-                value: Math.PI / 360,
-                center: new Point(0, 0, 0),
-            },
-        ]);
-        const Saturn = sphere(9, 40, new Point(-90, 0, 0), '#b59e68', [
-            { // Self Rotate
-                method: 'rotateOx',
-                value: Math.PI / 430
-            }, { // Center Rotate
-                method: 'rotateOx',
-                value: Math.PI / 450,
-                center: new Point(0, 0, 0),
-            },
-        ]);
-        const Uranus = sphere(6, 30, new Point(120, 0, 0), '#2688f5', [
-            { // Self Rotate
-                method: 'rotateOx',
-                value: Math.PI / 470
-            }, { // Center Rotate
-                method: 'rotateOx',
-                value: Math.PI / 510,
-                center: new Point(0, 0, 0),
-            },
-        ]);
-        const Neptune = sphere(5, 30, new Point(-170, 0, 0), '#5bebed', [
-            { // Self Rotate
-                method: 'rotateOx',
-                value: Math.PI / 510
-            }, { // Center Rotate
-                method: 'rotateOx',
-                value: Math.PI / 650,
-                center: new Point(0, 0, 0),
-            },
-        ]);
-
-        this.solarSystem = [Sun, Earth, Moon, Mercury, Venus, Mars, Jupiter, Saturn, Uranus, Neptune];
-
-        this.figure = {
-            cube:  cube(),
-            cone:  cone(),
-            doubleHyperboloid:  doubleHyperboloid(),
-            ellipsoid:  ellipsoid(),
-            ellipticalCylinder:  ellipticalCylinder(),
-            ellipticalParaboloid:  ellipticalParaboloid(),
-            hyperbolicCylinder: hyperbolicCylinder(),
-            hyperbolicParaboloid: hyperbolicParaboloid(),
-            parabolicCylinder: parabolicCylinder(),
-            pyramid: pyramid(),
-            singleHyperboloid: singleHyperboloid(),
-            sphere: sphere(),
-            tor: tor()
+    ]);
+    const Mercury = sphere(1, 20, new Point(25, 0, 0), '#7b6036', [
+        { // Self Rotate
+            method: 'rotateOx',
+            value: Math.PI / 270
+        }, { // Center Rotate
+            method: 'rotateOx',
+            value: Math.PI / 90,
+            center: new Point(0, 0, 0),
+        },
+    ]);
+    const Venus = sphere(1.2, 20, new Point(30, 0, 0), '#c7a555', [
+        { // Self Rotate
+            method: 'rotateOx',
+            value: Math.PI / 300
+        }, { // Center Rotate
+            method: 'rotateOx',
+            value: Math.PI / 120,
+            center: new Point(0, 0, 0),
+        },
+    ]);
+    const Earth = sphere(3, 20, new Point(-45, 0, 0), '#00c1ff', [
+        { // Self Rotate
+            method: 'rotateOx',
+            value: Math.PI / 360,
+        }, 
+        { // Center Rotate
+            method: 'rotateOx',
+            value: Math.PI / 180,
+            center: new Point(0, 0, 0),
+            moveJoined: true
+        },
+    ]);
+    const Moon = sphere(0.5, 20, new Point(-53, 0, 0), '#ff0000', [
+        { // Self Rotate
+            method: 'rotateOx',
+            value: Math.PI / 360
+        }, 
+        { // Earth Rotate
+            method: 'rotateOx',
+            value: Math.PI / 180,
+            center: Earth.center
         }
+    ]);
+    const Mars = sphere(2, 20, new Point(-55, 0, 0), '#ff0000', [
+        { // Self Rotate
+            method: 'rotateOx',
+            value: Math.PI / 390
+        }, { // Center Rotate
+            method: 'rotateOx',
+            value: Math.PI / 210,
+            center: new Point(0, 0, 0),
+        },
+    ]);
+    const Jupiter = sphere(10, 40, new Point(75, 0, 0), '#e1dab8', [
+        { // Self Rotate
+            method: 'rotateOx',
+            value: Math.PI / 430
+        }, { // Center Rotate
+            method: 'rotateOx',
+            value: Math.PI / 360,
+            center: new Point(0, 0, 0),
+        },
+    ]);
+    const Saturn = sphere(9, 40, new Point(-90, 0, 0), '#b59e68', [
+        { // Self Rotate
+            method: 'rotateOx',
+            value: Math.PI / 430
+        }, { // Center Rotate
+            method: 'rotateOx',
+            value: Math.PI / 450,
+            center: new Point(0, 0, 0),
+        },
+    ]);
+    const Uranus = sphere(6, 30, new Point(120, 0, 0), '#2688f5', [
+        { // Self Rotate
+            method: 'rotateOx',
+            value: Math.PI / 470
+        }, { // Center Rotate
+            method: 'rotateOx',
+            value: Math.PI / 510,
+            center: new Point(0, 0, 0),
+        },
+    ]);
+    const Neptune = sphere(5, 30, new Point(-170, 0, 0), '#5bebed', [
+        { // Self Rotate
+            method: 'rotateOx',
+            value: Math.PI / 510
+        }, { // Center Rotate
+            method: 'rotateOx',
+            value: Math.PI / 650,
+            center: new Point(0, 0, 0),
+        },
+    ]);
 
-        this.figures = [this.figure.sphere];
+    const solarSystem = [Sun, Earth, Moon, Mercury, Venus, Mars, Jupiter, Saturn, Uranus, Neptune];
 
-        this.animations = [
-            {//Sun
-                root: Sun,
-                nodes: [
-                    {// Mercury
-                        root: Mercury
-                    }, {//Venus
-                        root: Venus
-                    }, {//Earth
-                        root: Earth,
-                        nodes: [
-                            {root: Moon}
-                        ]
-                    }, {// Mars
-                        root: Mars
-                    }, {//Jupiter
-                        root: Jupiter
-                    }, {//Saturn
-                        root: Saturn
-                    }, {// Uranus
-                        root: Uranus
-                    }, {//Neptune
-                        root: Neptune
-                    }
-                ]
-            }
-        ];
+    const figure = {
+        cube:  cube(),
+        cone:  cone(),
+        doubleHyperboloid:  doubleHyperboloid(),
+        ellipsoid:  ellipsoid(),
+        ellipticalCylinder:  ellipticalCylinder(),
+        ellipticalParaboloid:  ellipticalParaboloid(),
+        hyperbolicCylinder: hyperbolicCylinder(),
+        hyperbolicParaboloid: hyperbolicParaboloid(),
+        parabolicCylinder: parabolicCylinder(),
+        pyramid: pyramid(),
+        singleHyperboloid: singleHyperboloid(),
+        sphere: sphere(),
+        tor: tor()
     }
 
-    componentDidMount() {
-        this.canvas = new Canvas({
+    let figures = [figure.sphere];
+
+    const animations = [
+        {//Sun
+            root: Sun,
+            nodes: [
+                {// Mercury
+                    root: Mercury
+                }, {//Venus
+                    root: Venus
+                }, {//Earth
+                    root: Earth,
+                    nodes: [
+                        {root: Moon}
+                    ]
+                }, {// Mars
+                    root: Mars
+                }, {//Jupiter
+                    root: Jupiter
+                }, {//Saturn
+                    root: Saturn
+                }, {// Uranus
+                    root: Uranus
+                }, {//Neptune
+                    root: Neptune
+                }
+            ]
+        }
+    ];
+
+    useEffect(() => {
+        canvas = new Canvas({
             id: 'graph3DCanvas',
-            WIN: this.WIN,
+            WIN: WIN,
         });
 
-        this.math = new Math3D({
-            WIN: this.WIN,
+        math = new Math3D({
+            WIN: WIN,
         });
 
-        this.LIGHT = new Light(-70, 2, 0, 300000);
-        this.SUNLIGHT = new Light(0, 0, 0, 300000);
-
-        let FPS = 0;
-        this.FPS = 0;
-        let lastTimestamp = Date.now();
+        LIGHT = new Light(-70, 2, 0, 300000);
+        SUNLIGHT = new Light(0, 0, 0, 300000);
 
         const animLoop = () => {
-            // calc fps
-            FPS++;
-            const timestamp = Date.now();
-            if (timestamp - lastTimestamp >= 1000) {
-                this.FPS = FPS;
-                FPS = 0;
-                lastTimestamp = timestamp;
-            }
             // print scene
-            if (this.isAnimationAllow) {
-                this.figuresAnimantion(this.animations);
+            if (isAnimationAllow) {
+                figuresAnimantion(animations);
             }
-            this.math.calcPlane();
-            this.math.calcWindowVectors();
-            this.run(this.figures);
+            math.calcPlane();
+            math.calcWindowVectors();
+            run(figures);
             window.requestAnimFrame(animLoop);
         }
         animLoop();
-    }
+    });
 
     //Animations
-    figureAnimantion(figure, parentMatrix = this.math.one()) {
+    const figureAnimantion = (figure, parentMatrix = math.one()) => {
         //General Matrix
         const matrix = figure.animations.reduce((accumulator, anime) => {
             const center = anime.center || figure.center;
             const { x, y, z } = center;
             const matrix = [
-                this.math.move({ x, y, z }),
-                this.math[anime.method](anime.value),
-                this.math.move({ x: -x, y: -y, z: -z })
+                math.move({ x, y, z }),
+                math[anime.method](anime.value),
+                math.move({ x: -x, y: -y, z: -z })
             ].reduce(
-                (S, matrix) => this.math.multMatrix(S, matrix),
-                this.math.one()
+                (S, matrix) => math.multMatrix(S, matrix),
+                math.one()
             );
-            return this.math.multMatrix(accumulator, matrix);
+            return math.multMatrix(accumulator, matrix);
         }, parentMatrix);
         // Inherited Matrix
         const InheritedMatrix = figure.animations.reduce((accumulator, anime) => {
@@ -250,176 +236,175 @@ class Graph3D extends React.Component {
             const { x, y, z } = center;
             if(anime.moveJoined) {
                 var matrix =  [
-                    this.math.move({ x, y, z }),
-                    this.math[anime.method](anime.value),
-                    this.math.move({ x: -x, y: -y, z: -z })
+                    math.move({ x, y, z }),
+                    math[anime.method](anime.value),
+                    math.move({ x: -x, y: -y, z: -z })
                 ].reduce(
-                    (S, matrix) => this.math.multMatrix(S, matrix),
-                    this.math.one()
+                    (S, matrix) => math.multMatrix(S, matrix),
+                    math.one()
                 );
             } else {
-                matrix = this.math.one();
+                matrix = math.one();
             }
-            return this.math.multMatrix(accumulator, matrix);
+            return math.multMatrix(accumulator, matrix);
         }, parentMatrix);
 
         //Transform current figure
-        this.math.transform(matrix, figure.center);
-        figure.points.forEach(point => this.math.transform(matrix, point));
+        math.transform(matrix, figure.center);
+        figure.points.forEach(point => math.transform(matrix, point));
         return InheritedMatrix;
     }
  
-    figuresAnimantion(animations, parentMatrix = this.math.one()) {
+    const figuresAnimantion = (animations, parentMatrix = math.one()) => {
         animations.forEach(anime => {
-            const matrix = this.figureAnimantion(anime.root, parentMatrix);
+            const matrix = figureAnimantion(anime.root, parentMatrix);
             if(anime.nodes) {
-                this.figuresAnimantion(anime.nodes, matrix); 
+                figuresAnimantion(anime.nodes, matrix); 
             }
         });
     }
 
     //UserActions
-    transformCamera(matrix) {
-        this.math.transform(matrix, this.WIN.CAMERA);
-        this.math.transform(matrix, this.WIN.DISPLAY);
-        this.math.transform(matrix, this.WIN.P1);
-        this.math.transform(matrix, this.WIN.P2);
-        this.math.transform(matrix, this.WIN.P3);
+    const transformCamera = (matrix) => {
+        math.transform(matrix, WIN.CAMERA);
+        math.transform(matrix, WIN.DISPLAY);
+        math.transform(matrix, WIN.P1);
+        math.transform(matrix, WIN.P2);
+        math.transform(matrix, WIN.P3);
     }
 
-    keyDownHandler(e) {
+    const keyDownHandler = (e) => {
         //eslint-disable-next-lin
         switch (e.keyCode) {
             case 65: // key a
-                return this.transformCamera(this.math.rotateOx(Math.PI / 180));
+                return transformCamera(math.rotateOx(-Math.PI / 180));
             case 68: // key d
-                return this.transformCamera(this.math.rotateOx(-Math.PI / 180));
+                return transformCamera(math.rotateOx(Math.PI / 180));
             case 83: // key s
-                return this.transformCamera(this.math.rotateOy(Math.PI / 180));
+                return transformCamera(math.rotateOy(Math.PI / 180));
             case 87: // key w
-                return this.transformCamera(this.math.rotateOy(-Math.PI / 180));
+                return transformCamera(math.rotateOy(-Math.PI / 180));
             case 81: // key q
-                return this.transformCamera(this.math.rotateOz(Math.PI / 180));
+                return transformCamera(math.rotateOz(Math.PI / 180));
             case 69: // key e
-                return this.transformCamera(this.math.rotateOz(-Math.PI / 180));
+                return transformCamera(math.rotateOz(-Math.PI / 180));
             case 39: // key right arrow
-                return this.transformCamera(this.math.move({x: 1, y: 0, z: 0}));
+                return transformCamera(math.move({x: 1, y: 0, z: 0}));
             case 37: // key left arrow
-                return this.transformCamera(this.math.move({x: -1, y: 0, z: 0}));
+                return transformCamera(math.move({x: -1, y: 0, z: 0}));
             case 38: // key upper arrow
-                return this.transformCamera(this.math.move({x: 0, y: 1, z: 0}));
+                return transformCamera(math.move({x: 0, y: 1, z: 0}));
             case 40: //key lower arrow
-                return this.transformCamera(this.math.move({x: 0, y: -1, z: 0}));
+                return transformCamera(math.move({x: 0, y: -1, z: 0}));
             }
     }
 
-    wheel(e) {
+    const wheel = (e) => {
         const delta = (e.nativeEvent.wheelDeltaY > 0) ? -0.02 : 0.02;
-        this.transformCamera(this.math.move({
-            x: this.WIN.CAMERA.x * delta,
-            y: this.WIN.CAMERA.y * delta, 
-            z: this.WIN.CAMERA.z * delta
+        transformCamera(math.move({
+            x: WIN.CAMERA.x * delta,
+            y: WIN.CAMERA.y * delta, 
+            z: WIN.CAMERA.z * delta
         }));
     }
 
     //UI
-    selectFigure() {
-        const selectBox = document.getElementById('figures');
-        if(selectBox.options[selectBox.selectedIndex].text === 'solarSystem') {
-            this.figures = this.solarSystem;
+    const selectFigure = (name) => {
+        if(name.options[name.selectedIndex].text === 'solarSystem') {
+            figures = solarSystem;
         } else {
-            this.figures = [this.figure[selectBox.options[selectBox.selectedIndex].text]];
+            figures = [figure[name.options[name.selectedIndex].text]];
         }
     }
 
-    selectColor() {
-        this.figures.forEach(figure => {
+    const selectColor = (value) => {
+        figures.forEach(figure => {
             figure.polygons.forEach(polygon => {
-                polygon.colour = polygon.hexToRgb(document.getElementById('colorSelector').value);
+                polygon.colour = polygon.hexToRgb(value);
             });
         });
     }
 
-    selectLight() {
-        this.SUNLIGHT.lumen = document.getElementById('powerOfLight').value;
-        this.LIGHT.lumen = document.getElementById('powerOfLight').value;
+    const selectLight = (value) => {
+        SUNLIGHT.lumen = value;
+        LIGHT.lumen = value;
     }
 
-    isPoints() {
-        return this.isPointsAllow = !this.isPointsAllow;
+    const isPoints = () => {
+        return isPointsAllow = !isPointsAllow;
     }
 
-    isEdges() {
-        return this.isEdgesAllow = !this.isEdgesAllow;
+    const isEdges = () => {
+        return isEdgesAllow = !isEdgesAllow;
     }
 
-    isPolygons() {
-        return this.isPolygonsAllow = !this.isPolygonsAllow;
+    const isPolygons = () => {
+        return isPolygonsAllow = !isPolygonsAllow;
     }
 
-    isAnimation() {
-        this.isAnimationAllow = !this.isAnimationAllow;
+    const isAnimation = () => {
+        isAnimationAllow = !isAnimationAllow;
     }
 
-    isLight() {
-        return this.lightAllow = !this.lightAllow;
+    const isLight = () => {
+        return lightAllow = !lightAllow;
     }
 
-    isSideLight() {
-        return this.sideLightAllow = !this.sideLightAllow;
+    const isSideLight = () => {
+        return sideLightAllow = !sideLightAllow;
     }
     
-    run(figures) {
-        this.math.calcPlane();
-        this.math.calcWindowVectors();
-        this.canvas.transparentClear();
+    const run = (figures) => {
+        math.calcPlane();
+        math.calcWindowVectors();
+        canvas.transparentClear();
         //polygons
-        if(this.isPolygonsAllow) {
+        if(isPolygonsAllow) {
             const polygons = [];
             figures.forEach((figure, index) => {
-                this.math.clacDisctance(figure, this.WIN.CAMERA, 'distance');
-                this.math.clacDisctance(figure, this.SUNLIGHT, 'lumen');
-                this.math.clacDisctance(figure, this.LIGHT, 'sideLimen');
-                this.math.normVector(figure);
+                math.clacDisctance(figure, WIN.CAMERA, 'distance');
+                math.clacDisctance(figure, SUNLIGHT, 'lumen');
+                math.clacDisctance(figure, LIGHT, 'sideLimen');
+                math.normVector(figure);
                 figure.polygons.forEach(polygon => {
                     polygon.figureIndex = index;
                     polygons.push(polygon);
                 });
             });
-            this.math.sortByArtistAlgorithm(polygons);
+            math.sortByArtistAlgorithm(polygons);
             polygons.forEach(polygon => {
                 const figure = figures[polygon.figureIndex];
                 const points = polygon.points.map(point => {
-                    return this.math.getProection(figure.points[point]);
+                    return math.getProection(figure.points[point]);
                 });
-                let sunLumen = this.math.clacIlluminationDistance(polygon.lumen, this.SUNLIGHT.lumen);
-                let sideLumen = this.math.clacIlluminationDistance(polygon.sideLimen, this.LIGHT.lumen);
-                if (!this.lightAllow) {
+                let sunLumen = math.clacIlluminationDistance(polygon.lumen, SUNLIGHT.lumen);
+                let sideLumen = math.clacIlluminationDistance(polygon.sideLimen, LIGHT.lumen);
+                if (!lightAllow) {
                     sunLumen = 0;
                 }
-                if (!this.sideLightAllow) {
+                if (!sideLightAllow) {
                     sideLumen = 0;
                 }
                 let { r, g, b } = polygon.colour;
                 r = Math.round(r * (sunLumen + sideLumen));
                 g = Math.round(g * (sunLumen + sideLumen));
                 b = Math.round(b * (sunLumen + sideLumen));
-                //const angle = this.math.calcCorner(polygon.norm, this.WIN.CAMERA);
+                //const angle = math.calcCorner(polygon.norm, WIN.CAMERA);
                 //if ((Math.acos(angle) >= 0 && Math.acos(angle) <= Math.PI / 2)) {
-                this.canvas.polygon(points, polygon.rgbToHex(r, g, b));
+                canvas.polygon(points, polygon.rgbToHex(r, g, b));
                 //}
                 if (figure.name === 'hyperbolicParaboloid' || figure.name === 'parabolicCylinder' || figure.name === 'hyperbolicCylinder' || figure.name === 'cone') {
-                    this.canvas.polygon(points, polygon.rgbToHex(r, g, b));
+                    canvas.polygon(points, polygon.rgbToHex(r, g, b));
                 }
             });
         }
         //edges
-        if(this.isEdgesAllow) {
+        if(isEdgesAllow) {
             figures.forEach(figure => {
                 figure.edges.forEach(edge => {
-                    const point1 = this.math.getProection(figure.points[edge.p1]);
-                    const point2 = this.math.getProection(figure.points[edge.p2]);
-                    this.canvas.line(
+                    const point1 = math.getProection(figure.points[edge.p1]);
+                    const point2 = math.getProection(figure.points[edge.p2]);
+                    canvas.line(
                         point1.x,
                         point1.y,
                         point2.x,
@@ -430,46 +415,44 @@ class Graph3D extends React.Component {
             });
         }
         //points
-        if(this.isPointsAllow) {
+        if(isPointsAllow) {
             figures.forEach(figure => {
                 figure.points.forEach(point => {
-                    const proectionPoint = this.math.getProection(point);
-                    this.canvas.point(proectionPoint.x, proectionPoint.y);
+                    const proectionPoint = math.getProection(point);
+                    canvas.point(proectionPoint.x, proectionPoint.y);
                 });
             });
         }
     }
 
-    render() {
-        return (
-            <div className = "graph3D">
-                <canvas
-                    className = "canvas3D"
-                    id = "graph3DCanvas"
-                    onMouseDown = {() => this.canMove = true}
-                    onMouseUp = {() => this.canMove = false}
-                    onMouseLeave = {() => this.canMove = false}
-                    onWheel = {(e) => this.wheel(e)}
-                    onKeyDown = {(e) => this.keyDownHandler(e)}
-                    tabIndex = "0"
-                ></canvas>
-                <UI
-                    name = "graph3D"
-                    //allows
-                    isPoints = {() => this.isPoints()}
-                    isEdges = {() => this.isEdges()}
-                    isPolygons = {() => this.isPolygons()}
-                    isAnimation = {() => this.isAnimation()}
-                    isLight = {() => this.isLight()}
-                    isSideLight = {() => this.isSideLight()}
-                    //options
-                    selectFigure = {() => this.selectFigure()}
-                    selectColor = {() => this.selectColor()}
-                    selectLight = {() => this.selectLight()}
-                ></UI>
-            </div>
-        );
-    }
+    return (
+        <div className = "graph3D">
+            <canvas
+                className = "canvas3D"
+                id = "graph3DCanvas"
+                onMouseDown = {() => canMove = true}
+                onMouseUp = {() => canMove = false}
+                onMouseLeave = {() => canMove = false}
+                onWheel = {(e) => wheel(e)}
+                onKeyDown = {(e) => keyDownHandler(e)}
+                tabIndex = "0"
+            ></canvas>
+            <UI
+                name = "graph3D"
+                //allows
+                isPoints = {() => isPoints()}
+                isEdges = {() => isEdges()}
+                isPolygons = {() => isPolygons()}
+                isAnimation = {() => isAnimation()}
+                isLight = {() => isLight()}
+                isSideLight = {() => isSideLight()}
+                //options
+                selectFigure = {(name) => selectFigure(name)}
+                selectColor = {(value) => selectColor(value)}
+                selectLight = {(value) => selectLight(value)}
+            ></UI>
+        </div>
+    );
 }
 
 export default Graph3D;

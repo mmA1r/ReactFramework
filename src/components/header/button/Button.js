@@ -1,28 +1,16 @@
-import React from "react";
 import "./button.css"
 
-class Button extends React.Component {
-    constructor(props) {
-        super(props);
-        const { title, name, onClick, active } = props;
-        this.title = title;
-        this.name = name;
-        this.onClick = onClick;
-        this.isActive = active === name;
-    }
+function Button (props) {
+    const { title, name, onClick, active } = props;
 
-    setActive() {
-        return `headerButton ${this.isActive ? 'active' : ''}`;
-    }
+    const setActive = () =>  { return `headerButton ${ active === name ? 'active' : ''}`; }
 
-    render() {
-        return (
-            <div
-                className = { this.setActive() }
-                onClick = {() => this.onClick(this.name)}
-            >{ this.title }</div>
-        );
-    }
+    return (
+        <div
+            className = { setActive() }
+            onClick = { () => onClick(name) }
+        >{ title }</div>
+    );
 }
 
 export default Button;
