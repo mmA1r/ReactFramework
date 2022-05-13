@@ -1,0 +1,33 @@
+.calculator {
+    width: 100%;
+    height: 100%;
+    margin-top: 7%;
+}
+
+.calcInputs {
+    width: 100%;
+    height: 100px;
+    margin: 3% 0 3% 0;
+}
+
+.operandsBlock {
+    display: flex;
+    justify-content: center;
+}
+
+.rules {
+    position: fixed;
+    left: 40px;
+    top: 200px;
+    opacity: 0;
+    transition: 0.3s;
+    font-size: 16pt;
+}
+
+.rules.act {
+    opacity: 1;
+    transition: 0.3s;
+
+    background-color: white;
+    padding: 3% 3% 5% 3%;
+}

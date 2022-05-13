@@ -1,0 +1,35 @@
+.numbers {
+    width: 25%;
+    height: 100%;
+    outline: none;
+    background-color: rgba(172, 208, 255, 0.185);
+    border: none;
+    border-radius: 2px;
+    border-bottom: solid 4px white;;
+    color: black;
+    margin-left: 10px;;
+    font-size: 14px;
+}
+
+.numbers:hover {
+    border-color: rgb(255, 211, 191);
+    transition: 0.3s;
+}
+
+.numbers:focus {
+    border-color: rgb(124, 122, 243);
+}
+
+.result {
+    width: 40%;
+    height: 100%;
+    outline: none;
+    color: black;
+    background-color: rgba(255, 255, 255, 0.459);
+    border-radius: 2px;
+    border: solid 1px rgb(124, 122, 243);
+}
+
+.result:hover {
+    background-color: rgb(255, 255, 255);
+}

@@ -43,7 +43,7 @@ class UI extends React.Component {
         //console.log(index)
         this.funcs.splice(index, 1);
         this.setState({ funcsLength: this.funcs.length });
-        this.run();
+        this.run2D();
     }
 
     togglePanel() {

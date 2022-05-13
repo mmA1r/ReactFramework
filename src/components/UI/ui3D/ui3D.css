@@ -25,6 +25,13 @@
     background-color: #6771ff0c;
 }
 
+.optionButton.active:hover {
+    color: #a697ff;
+    border-color: #a697ff;
+    background-color: #6771ff0c;
+    transition: 0.1s;
+}
+
 .options3D {
     max-width: 100%;
     margin: 40px 0px 40px 0px;
