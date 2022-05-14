@@ -11,15 +11,14 @@ function Calculator () {
 
     const [showRules, setShowRules] = useState(false);
 
-    const A = useRef(null);
-    const onChangeA = () => { A.current.focus() }
-    const B = useRef(null);
-    const onChangeB = () => { B.current.focus() }
+    let A;
+    let B;
+
     const C = useRef(null);
     const onChangeC = () => { C.current.focus() }
 
     const showValue = (name) => {
-        return C.current.value = calc[name](calc.toValue(A.current.value), calc.toValue(B.current.value))
+        return C.current.value = calc[name](calc.toValue(A), calc.toValue(B))
     }
 
     return (
@@ -27,15 +26,13 @@ function Calculator () {
             <div className = 'calcInputs'>
                 <textarea 
                     className = "numbers" 
-                    ref = {A} 
                     placeholder = "0" 
-                    onChange = {onChangeA}
+                    onChange = {(e) => A = e.target.value}
                 ></textarea>
                 <textarea 
                     className = "numbers" 
-                    ref = {B}  
                     placeholder = "0" 
-                    onChange = {onChangeB}
+                    onChange = {(e) => B = e.target.value}
                 ></textarea>
             </div>
             <div className = 'calcInputs'>

@@ -1,20 +1,14 @@
-
-import { useRef } from 'react';
 import './figureSelector.css'
 
 function FigureSelector (props) {
     const { selectFigure } = props;
 
-    const select = useRef(null);
-    const selectOnChange = () => {select.current.focus()}
-
     return (
         <div className = "figureSelector">
             <select
-                ref = { select }
                 defaultValue = "sphere"
                 id = "figures"
-                onChange = {() => {selectOnChange(); selectFigure(select.current)}}
+                onChange = {(e) => {selectFigure(e.target)}}
             >
                 <option className = "options">cube</option>
                 <option className = "options">cone</option>

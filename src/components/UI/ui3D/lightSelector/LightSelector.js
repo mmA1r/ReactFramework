@@ -1,18 +1,13 @@
-import { useRef } from 'react';
 import './lightSelector.css'
 
 function LightSelector (props) {
     const { selectLight } = props;
 
-    const lights = useRef(null);
-    const LightOnChange = () => { lights.current.focus() };
-
     return (
         <div className = "lightSelector">
             <span>Light</span>
             <input
-                ref = { lights }
-                onChange = {() => {LightOnChange(); selectLight(lights.current.value)}}
+                onChange = {(e) => {selectLight(e.target.value)}}
                 id = "powerOfLight"
                 type = "range"
                 min = "10000"
