@@ -2,10 +2,10 @@ import './funcInputs.css'
 import './heart.css'
 import './deleteButton.css'
 
-function FuncInputs (props) {
-    const { func, delFunction } = props;
+function FuncInputs(props) {
+    const { func, delFunction, index } = props;
 
-    const setFunction = (e) =>  {
+    const setFunction = (e) => {
         try {
             let f;
             //eslint-disable-next-line
@@ -26,45 +26,45 @@ function FuncInputs (props) {
     return (
         <div>
             <input // function
-                className = "funcInputs"
-                onKeyUp = { (e) => setFunction(e) }
-                placeholder = "y = f(x)"
-                defaultValue = { func.value }
+                className="funcInputs"
+                onKeyUp={setFunction}
+                placeholder="y = f(x)"
+                defaultValue={func.value}
             ></input>
             <input // width
-                className = "funcInputs"
-                onKeyUp = {(e) => setWidth(e)}
-                placeholder = "width"
-                defaultValue = { func.width }
+                className="funcInputs"
+                onKeyUp={setWidth}
+                placeholder="width"
+                defaultValue={func.width}
             ></input>
             <input //start Line
-                className = "funcInputs"
-                onKeyUp = {(e) => sLine(e)}
-                placeholder = "Start Line"
-                defaultValue = { func.sLine }
+                className="funcInputs"
+                onKeyUp={sLine}
+                placeholder="Start Line"
+                defaultValue={func.sLine}
             ></input>
             <input // end Line
-                className = "funcInputs"
-                onKeyUp = {(e) => eLine(e)}
-                placeholder = "End Line"
-                defaultValue = { func.eLine }
+                className="funcInputs"
+                onKeyUp={eLine}
+                placeholder="End Line"
+                defaultValue={func.eLine}
             ></input>
             <input // color
-                type = 'color'
-                className = "colorSelectors"
-                onChange = {(e) => setColor(e)} 
-                defaultValue = { func.color }
+                type='color'
+                className="colorSelectors"
+                onChange={setColor}
+                defaultValue={func.color}
             ></input>
             <button // delete function`s inputs
-                className = "deleteButton"
-                onClick = {(index) => delFunction(index)}
+                className="deleteButton"
+                onClick={() => delFunction(index)}
             >Delete
             </button>
             <input  // checkbox for derevative
-                className = "derevateCheck"
-                type = 'checkbox'
-                onClick = {() => func.isDerivative = ! func.isDerivative}
-                defaultChecked = { func.isDerivative ? true : false }
+                className="derevateCheck"
+                type='checkbox'
+                onClick={() => func.isDerivative = !func.isDerivative}
+                defaultChecked={func.isDerivative}
             ></input>
         </div>
     );

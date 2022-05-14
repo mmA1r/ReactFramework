@@ -19,7 +19,7 @@ class PolynomialCalculator {
     }
 
     prodBase(a, p) {
-        if (typeof p == 'number') {
+        if (typeof p === 'number') {
             return a * p;
         }
         return null;
@@ -28,7 +28,7 @@ class PolynomialCalculator {
     add(a, b) {
         const members = [];
         a.poly.forEach(elemA => {
-            const member = b.poly.find(elemB => elemB.power == elemA.power);
+            const member = b.poly.find(elemB => elemB.power === elemA.power);
 
             if (member) {
                 members.push(new Member(this.addBase(elemA.value, member.value), elemA.power));
@@ -37,7 +37,7 @@ class PolynomialCalculator {
             }
         });
         b.poly.forEach(elemB => {
-            if (!members.find(el => el.power == elemB.power)) {
+            if (!members.find(el => el.power === elemB.power)) {
                 members.push(new Member(elemB.value, elemB.power));
             }
         });
@@ -52,7 +52,7 @@ class PolynomialCalculator {
     sub(a, b) {
         const members = [];
         a.poly.forEach(elemA => {
-            const member = b.poly.find(elemB => elemB.power == elemA.power);
+            const member = b.poly.find(elemB => elemB.power === elemA.power);
 
             if (member) {
                 members.push(new Member(this.subBase(elemA.value, member.value), elemA.power));
@@ -62,7 +62,7 @@ class PolynomialCalculator {
         });
 
         b.poly.forEach(elemB => {
-            if (!members.find(el => el.power == elemB.power)) {
+            if (!members.find(el => el.power === elemB.power)) {
                 members.push(new Member(this.prodBase(elemB.value, -1), elemB.power));
             }
         });
@@ -75,7 +75,7 @@ class PolynomialCalculator {
     }
 
     mult(a, b) {
-        let polynomial = new Polynomial;
+        let polynomial = new Polynomial();
         a.poly.forEach(elemA => {
             const members = [];
             b.poly.forEach(elemB => {

@@ -38,7 +38,7 @@ class Canvas {
 
     transparentClear () {
         this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
-        this.context.fillStyle ="transparent";
+        this.context.fillStyle = "#eeeb"; //"transparent";
         this.context.fillRect(0, 0, this.canvas.width, this.canvas.height);
     };
 
