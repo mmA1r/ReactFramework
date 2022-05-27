@@ -48,7 +48,9 @@ function UI(props) {
 
 
     return (
-        <div className={showPanel ? 'uiVisible' : 'ui'}>
+        <div 
+            className={showPanel ? 'uiVisible' : 'ui'}
+        >
             <button
                 className={setActive()}
                 onClick={() => setShowPanel(!showPanel)}
@@ -79,6 +81,7 @@ function UI(props) {
                         : ''
                 }
             </div>
+            {showPanel ? <div className='closeUI' onClick={() => {return setShowPanel(false)}}></div> : ''}
         </div>
     );
 }

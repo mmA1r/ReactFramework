@@ -6,26 +6,27 @@ import UI from "../UI/UI";
 import Light from "./Entities/Light";
 import Point from "./Entities/Point";
 
-import { 
-    cube, cone, doubleHyperboloid, ellipsoid, ellipticalCylinder, ellipticalParaboloid, hyperbolicCylinder, 
-    hyperbolicParaboloid, parabolicCylinder, pyramid, singleHyperboloid, sphere, tor 
+import {
+    cube, cone, doubleHyperboloid, ellipsoid, ellipticalCylinder, ellipticalParaboloid, hyperbolicCylinder,
+    hyperbolicParaboloid, parabolicCylinder, pyramid, singleHyperboloid, sphere, tor
 } from './figures';
 
 import './graph3D.css';
 
-function Graph3D () {
+function Graph3D() {
+    let scale = window.innerHeight / window.innerWidth;
     const WIN = {
         LEFT: -10,
-        BOTTOM: -10,
+        BOTTOM: -10 * scale,
         WIDTH: 20,
-        HEIGHT: 20,
+        HEIGHT: 20 * scale,
         P1: new Point(-10, 10, 350), // upper-left corener
         P2: new Point(-10, -10, 350), // lower-left corener
         P3: new Point(10, -10, 350), // lower-right corener
         CAMERA: new Point(0, 0, 350),
         DISPLAY: new Point(0, 0, 270)
     }
-    
+
     let canvas;
     let math;
     let LIGHT;
@@ -39,6 +40,8 @@ function Graph3D () {
     let isAnimationAllow = false;
 
     let canMove = false;
+    let dx = 0;
+    let dy = 0;
 
     const Sun = sphere(20, 40, new Point(0, 0, 0), '#ffbc1a', [
         { // Self Rotate
@@ -70,7 +73,7 @@ function Graph3D () {
         { // Self Rotate
             method: 'rotateOx',
             value: Math.PI / 360,
-        }, 
+        },
         { // Center Rotate
             method: 'rotateOx',
             value: Math.PI / 180,
@@ -82,7 +85,7 @@ function Graph3D () {
         { // Self Rotate
             method: 'rotateOx',
             value: Math.PI / 360
-        }, 
+        },
         { // Earth Rotate
             method: 'rotateOx',
             value: Math.PI / 180,
@@ -143,12 +146,12 @@ function Graph3D () {
     const solarSystem = [Sun, Earth, Moon, Mercury, Venus, Mars, Jupiter, Saturn, Uranus, Neptune];
 
     const figure = {
-        cube:  cube(),
-        cone:  cone(),
-        doubleHyperboloid:  doubleHyperboloid(),
-        ellipsoid:  ellipsoid(),
-        ellipticalCylinder:  ellipticalCylinder(),
-        ellipticalParaboloid:  ellipticalParaboloid(),
+        cube: cube(),
+        cone: cone(),
+        doubleHyperboloid: doubleHyperboloid(),
+        ellipsoid: ellipsoid(),
+        ellipticalCylinder: ellipticalCylinder(),
+        ellipticalParaboloid: ellipticalParaboloid(),
         hyperbolicCylinder: hyperbolicCylinder(),
         hyperbolicParaboloid: hyperbolicParaboloid(),
         parabolicCylinder: parabolicCylinder(),
@@ -171,7 +174,7 @@ function Graph3D () {
                 }, {//Earth
                     root: Earth,
                     nodes: [
-                        {root: Moon}
+                        { root: Moon }
                     ]
                 }, {// Mars
                     root: Mars
@@ -214,6 +217,16 @@ function Graph3D () {
         animLoop();
     });
 
+    const scaleCanvas = () => {
+        if (scale !== window.innerHeight / window.innerWidth) {
+            WIN.BOTTOM /= scale;
+            WIN.HEIGHT /= scale;
+            scale = window.innerHeight / window.innerWidth;
+            WIN.BOTTOM *= scale;
+            WIN.HEIGHT *= scale;
+        }
+    }
+
     //Animations
     const figureAnimantion = (figure, parentMatrix = math.one()) => {
         //General Matrix
@@ -234,8 +247,8 @@ function Graph3D () {
         const InheritedMatrix = figure.animations.reduce((accumulator, anime) => {
             const center = anime.center || figure.center;
             const { x, y, z } = center;
-            if(anime.moveJoined) {
-                var matrix =  [
+            if (anime.moveJoined) {
+                var matrix = [
                     math.move({ x, y, z }),
                     math[anime.method](anime.value),
                     math.move({ x: -x, y: -y, z: -z })
@@ -254,12 +267,12 @@ function Graph3D () {
         figure.points.forEach(point => math.transform(matrix, point));
         return InheritedMatrix;
     }
- 
+
     const figuresAnimantion = (animations, parentMatrix = math.one()) => {
         animations.forEach(anime => {
             const matrix = figureAnimantion(anime.root, parentMatrix);
-            if(anime.nodes) {
-                figuresAnimantion(anime.nodes, matrix); 
+            if (anime.nodes) {
+                figuresAnimantion(anime.nodes, matrix);
             }
         });
     }
@@ -289,28 +302,39 @@ function Graph3D () {
             case 69: // key e
                 return transformCamera(math.rotateOz(-Math.PI / 180));
             case 39: // key right arrow
-                return transformCamera(math.move({x: 1, y: 0, z: 0}));
+                return transformCamera(math.move({ x: 1, y: 0, z: 0 }));
             case 37: // key left arrow
-                return transformCamera(math.move({x: -1, y: 0, z: 0}));
+                return transformCamera(math.move({ x: -1, y: 0, z: 0 }));
             case 38: // key upper arrow
-                return transformCamera(math.move({x: 0, y: 1, z: 0}));
+                return transformCamera(math.move({ x: 0, y: 1, z: 0 }));
             case 40: //key lower arrow
-                return transformCamera(math.move({x: 0, y: -1, z: 0}));
-            }
+                return transformCamera(math.move({ x: 0, y: -1, z: 0 }));
+        }
+    }
+
+    const mouseMove = (e) => {
+        console.log(e)
+        if (canMove) {
+            const gradus = Math.PI / 960;
+            transformCamera(math.rotateOy((dy - e.nativeEvent.offsetY) * gradus));
+            transformCamera(math.rotateOx((dx - e.nativeEvent.offsetX) * gradus));
+            dx = e.nativeEvent.offsetX;
+            dy = e.nativeEvent.offsetY;
+        }
     }
 
     const wheel = (e) => {
         const delta = (e.nativeEvent.wheelDeltaY > 0) ? -0.02 : 0.02;
         transformCamera(math.move({
             x: WIN.CAMERA.x * delta,
-            y: WIN.CAMERA.y * delta, 
+            y: WIN.CAMERA.y * delta,
             z: WIN.CAMERA.z * delta
         }));
     }
 
     //UI
     const selectFigure = (name) => {
-        if(name.options[name.selectedIndex].text === 'solarSystem') {
+        if (name.options[name.selectedIndex].text === 'solarSystem') {
             figures = solarSystem;
         } else {
             figures = [figure[name.options[name.selectedIndex].text]];
@@ -353,13 +377,15 @@ function Graph3D () {
     const isSideLight = () => {
         return sideLightAllow = !sideLightAllow;
     }
-    
+
     const run = (figures) => {
         math.calcPlane();
         math.calcWindowVectors();
+        scaleCanvas();
+        canvas.resize();
         canvas.transparentClear();
         //polygons
-        if(isPolygonsAllow) {
+        if (isPolygonsAllow) {
             const polygons = [];
             figures.forEach((figure, index) => {
                 math.clacDisctance(figure, WIN.CAMERA, 'distance');
@@ -399,7 +425,7 @@ function Graph3D () {
             });
         }
         //edges
-        if(isEdgesAllow) {
+        if (isEdgesAllow) {
             figures.forEach(figure => {
                 figure.edges.forEach(edge => {
                     const point1 = math.getProection(figure.points[edge.p1]);
@@ -415,7 +441,7 @@ function Graph3D () {
             });
         }
         //points
-        if(isPointsAllow) {
+        if (isPointsAllow) {
             figures.forEach(figure => {
                 figure.points.forEach(point => {
                     const proectionPoint = math.getProection(point);
@@ -426,30 +452,31 @@ function Graph3D () {
     }
 
     return (
-        <div className = "graph3D">
+        <div className="graph3D">
             <canvas
-                className = "canvas3D"
-                id = "graph3DCanvas"
-                onMouseDown = {() => canMove = true}
-                onMouseUp = {() => canMove = false}
-                onMouseLeave = {() => canMove = false}
-                onWheel = {(e) => wheel(e)}
-                onKeyDown = {(e) => keyDownHandler(e)}
-                tabIndex = "0"
+                className="canvas3D"
+                id="graph3DCanvas"
+                onMouseDown={() => canMove = true}
+                onMouseUp={() => canMove = false}
+                onMouseLeave={() => canMove = false}
+                onWheel={(e) => wheel(e)}
+                onMouseMove={(e) => mouseMove(e)}
+                onKeyDown={(e) => keyDownHandler(e)}
+                tabIndex="0"
             ></canvas>
             <UI
-                name = "graph3D"
+                name="graph3D"
                 //allows
-                isPoints = {() => isPoints()}
-                isEdges = {() => isEdges()}
-                isPolygons = {() => isPolygons()}
-                isAnimation = {() => isAnimation()}
-                isLight = {() => isLight()}
-                isSideLight = {() => isSideLight()}
+                isPoints={() => isPoints()}
+                isEdges={() => isEdges()}
+                isPolygons={() => isPolygons()}
+                isAnimation={() => isAnimation()}
+                isLight={() => isLight()}
+                isSideLight={() => isSideLight()}
                 //options
-                selectFigure = {(name) => selectFigure(name)}
-                selectColor = {(value) => selectColor(value)}
-                selectLight = {(value) => selectLight(value)}
+                selectFigure={(name) => selectFigure(name)}
+                selectColor={(value) => selectColor(value)}
+                selectLight={(value) => selectLight(value)}
             ></UI>
         </div>
     );

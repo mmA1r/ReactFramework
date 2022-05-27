@@ -5,27 +5,27 @@ function Header(props) {
     const { activePage, setActiveButton } = props;
 
     return (
-        <div 
-            key = { activePage }
-            className = "header"
+        <div
+            key={activePage}
+            className="header"
         >
             <Button // calculator
-                title = "Calculator"
-                name = "calculator"
-                onClick = {(name) => setActiveButton(name)}
-                active = { activePage }
+                title="Calculator"
+                name="calculator"
+                onClick={(name) => setActiveButton(name)}
+                active={activePage}
             ></Button>
             <Button // Graph2D
-                title = "Graph2D"
-                name = "graph2D"
-                onClick = {(name) => setActiveButton(name)}
-                active = { activePage }
+                title="Graph2D"
+                name="graph2D"
+                onClick={(name) => setActiveButton(name)}
+                active={activePage}
             ></Button>
             <Button // Graph3d
-                title = "Graph3D"
-                name = "graph3D"
-                onClick = {(name) => setActiveButton(name)}
-                active = { activePage }
+                title="Graph3D"
+                name="graph3D"
+                onClick={(name) => setActiveButton(name)}
+                active={activePage}
             ></Button>
             {/* <Button // Billiards
                 title = "Game"

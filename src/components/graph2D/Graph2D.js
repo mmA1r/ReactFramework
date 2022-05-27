@@ -8,10 +8,10 @@ import './graph2D.css'
 function Graph2D() {
     let scale = window.innerHeight / window.innerWidth;
     const WIN = {
-        LEFT: -15,
-        BOTTOM: -15 * scale,
-        WIDTH: 30,
-        HEIGHT: 30 * scale
+        LEFT: -20,
+        BOTTOM: -20 * scale,
+        WIDTH: 40,
+        HEIGHT: 40 * scale
     };
 
     let canvas;
@@ -20,6 +20,7 @@ function Graph2D() {
     const funcs = [];
     let derevativeX = 0;
     let canMove = false;
+    let checked = false;
 
     useEffect(() => {
         canvas = new Canvas({
@@ -35,7 +36,17 @@ function Graph2D() {
             window.requestAnimFrame(animLoop);
         }
         animLoop();
-    }, []);
+    });
+
+    const scaleCanvas = () => {
+        if (scale !== window.innerHeight / window.innerWidth) {
+            WIN.BOTTOM /= scale;
+            WIN.HEIGHT /= scale;
+            scale = window.innerHeight / window.innerWidth;
+            WIN.BOTTOM *= scale;
+            WIN.HEIGHT *= scale;
+        }
+    }
 
     const mouseMove = (e) => {
         if (canMove) {
@@ -47,11 +58,11 @@ function Graph2D() {
 
     const wheel = (e) => {
         let delta = e.deltaY > 0 ? -0.3 : +0.3
-        if (WIN.BOTTOM + delta < -6) {
+        if (WIN.BOTTOM + delta < -5) {
             WIN.WIDTH -= delta;
-            WIN.HEIGHT -= delta;
+            WIN.HEIGHT -= delta * scale;
             WIN.LEFT += delta / 2;
-            WIN.BOTTOM += delta / 2;
+            WIN.BOTTOM += delta / 2 * scale;
         }
     }
 
@@ -93,7 +104,7 @@ function Graph2D() {
         }
         for (let i = 0; i < HEIGHT + LEFT + BOTTOM + WIDTH; i++) {
             canvas.line(i, 0, i, HEIGHT + BOTTOM, 'black', 0.3);
-            canvas.line(LEFT, i, HEIGHT + LEFT, i, 'black', 0.3);
+            canvas.line(LEFT, i, WIDTH + LEFT, i, 'black', 0.3);
         }
         for (let i = 0; i > BOTTOM; i--) {
             canvas.line(LEFT + BOTTOM, i, WIDTH + LEFT, i, 'black', 0.3);
@@ -109,17 +120,13 @@ function Graph2D() {
         while (x < WIN.LEFT + WIN.WIDTH) {
             try {
                 canvas.line(x, f(x), x + dx, f(x + dx), color, width);
-            } catch (e) {}
+            } catch (e) { }
             x += dx;
         }
     }
 
     const run = () => {
-        if(scale !== window.innerHeight / window.innerWidth) {
-            scale = window.innerHeight / window.innerWidth;
-            WIN.BOTTOM = -15 * scale;
-            WIN.HEIGHT = 30 * scale;
-        }
+        scaleCanvas();
         canvas.resize();
         canvas.transparentClear();
         printXY();
@@ -159,9 +166,16 @@ function Graph2D() {
         });*/
     }
 
+    const check = () => {
+        return checked ? !checked : checked;
+    }
+
     return (
-        <div className="graph2D">
+        <div 
+            className="graph2D"
+        >
             <UI
+
                 name="graph2D"
                 funcs={funcs}
             ></UI>

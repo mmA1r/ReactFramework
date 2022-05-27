@@ -68,3 +68,32 @@
 .uiButton.activeState:hover span {
     background-color: #d9ffffee;
 }
+
+@media screen and (max-device-width: 480px) {
+    .uiButton {
+        top: 170px;
+        left: 35px;
+        width: 70px;
+        height: 70px;
+
+        padding: 0 0 0 9px;
+    }
+
+    .uiButton:hover {
+        width: 70px;
+        height: 70px;
+        border-color: #d9ffffee;
+        transition: 0.3s;
+    }
+
+    .uiButton span {
+        height: 2px;
+        width: 40px;
+        background-color: black;
+        display: block;
+        margin: 10px 10px 10px 5px;
+        transition: 0.3s ease-in-out;
+        transform: none;
+    }
+    
+}

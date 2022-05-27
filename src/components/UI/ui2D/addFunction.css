@@ -10,9 +10,22 @@
     transition-duration: 0.3s;
     user-select: none;
 }
+
 .addFunctionButton:hover {
     background: transparent;
     border-color: #ffded4;
     color: #ffded4;
     transition: 0.3s;
+}
+
+@media screen and (max-device-width: 480px) {
+    .addFunctionButton {
+        width: 200px;
+        height: 100px;
+        margin-top: 320px;
+        margin-bottom: 15px;
+        padding: 10px 22px;
+        font-size: 25px;
+    }
+    
 }

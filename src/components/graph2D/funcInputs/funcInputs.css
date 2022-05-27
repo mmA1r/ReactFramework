@@ -6,11 +6,13 @@
     border: none;
     border-bottom: 3px solid #a1adc7;
     color: rgb(255, 255, 255);
-    max-width: 75px;
+    width: 75px;
 }
+
 ::-webkit-input-placeholder {
     color: rgb(133, 133, 133);
 }
+
 .funcInputs:focus {
     border-bottom: 3px solid #ffc7b0;
     box-shadow: 0 4px 4px -4px #ffd7c7;
@@ -26,10 +28,21 @@
     border-radius: 50%;
     box-shadow: 1px 1px 1px 0px grey;
 }
+
 .colorSelectors::-webkit-color-swatch-wrapper {
 	padding: 0%;
     border: none;
 }
+
 .colorSelectors::-webkit-color-swatch {
 	border: none;
+}
+
+@media screen and (max-device-width: 480px) {
+    .funcInputs {
+        width: 120px;
+        height: 30px;
+        margin-bottom: 5px;
+        padding-left: 15px;
+    }
 }

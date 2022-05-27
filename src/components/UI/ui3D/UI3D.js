@@ -5,8 +5,8 @@ import ColorSelector from "./colorSelector/ColorSelector";
 import './ui3D.css'
 import { useState } from "react";
 
-function UI3D (props) {
-    const { isPoints, isEdges, isPolygons, isAnimation, isLight, 
+function UI3D(props) {
+    const { isPoints, isEdges, isPolygons, isAnimation, isLight,
         isSideLight, selectFigure, selectColor, selectLight
     } = props;
 
@@ -18,63 +18,63 @@ function UI3D (props) {
     const [animation, setAnimation] = useState(false);
 
     return (
-        <div className = "ui3D">
+        <div className="ui3D">
             <FigureSelector
-                selectFigure = { (name) => selectFigure(name) }
+                selectFigure={(name) => selectFigure(name)}
             ></FigureSelector>
-            <div className = "options3D">
+            <div className="options3D">
                 <div>
                     <button  //Points
-                        className = {points ? 'optionButton active' : 'optionButton'} 
-                        onClick = {() => {
-                            setPoints(!points); 
-                            isPoints(); 
+                        className={points ? 'optionButton active' : 'optionButton'}
+                        onClick={() => {
+                            setPoints(!points);
+                            isPoints();
                         }
-                    }>Points</button>
+                        }>Points</button>
                     <button  //Edges
-                        className = {edges ? 'optionButton active' : 'optionButton'} 
-                        onClick = {() => {
-                            setEdges(!edges); 
-                            isEdges(); 
+                        className={edges ? 'optionButton active' : 'optionButton'}
+                        onClick={() => {
+                            setEdges(!edges);
+                            isEdges();
                         }
-                    }>Edges</button>
+                        }>Edges</button>
                     <button  //Polygons
-                        className = {polygons ? 'optionButton active' : 'optionButton'} 
-                        onClick = {() => {
+                        className={polygons ? 'optionButton active' : 'optionButton'}
+                        onClick={() => {
                             setPolygons(!polygons);
-                            isPolygons(); 
+                            isPolygons();
                         }
-                    }>Polygons</button>
+                        }>Polygons</button>
                 </div>
                 <div>
                     <button  //Light
-                        className = {light ? 'optionButton active' : 'optionButton'} 
-                        onClick = {() => {
+                        className={light ? 'optionButton active' : 'optionButton'}
+                        onClick={() => {
                             setLight(!light);
                             isLight();
                         }
                         }>Light</button>
                     <button  //SideLight
-                        className = {sideLight ? 'optionButton active' : 'optionButton'} 
-                        onClick = {() => {
+                        className={sideLight ? 'optionButton active' : 'optionButton'}
+                        onClick={() => {
                             setSideLight(!sideLight);
                             isSideLight();
                         }
-                    }>SideLight</button>
+                        }>SideLight</button>
                     <button  //Animation
-                        className = {animation ? 'optionButton active' : 'optionButton'} 
-                        onClick = {() => {
+                        className={animation ? 'optionButton active' : 'optionButton'}
+                        onClick={() => {
                             setAnimation(!animation);
-                            isAnimation(); 
+                            isAnimation();
                         }
-                    }>Animation</button>
+                        }>Animation</button>
                 </div>
             </div>
             <LightSelector
-                selectLight = {(value) => selectLight(value) }
+                selectLight={(value) => selectLight(value)}
             ></LightSelector>
             <ColorSelector
-                selectColor = {(value) => selectColor(value) }
+                selectColor={(value) => selectColor(value)}
             ></ColorSelector>
         </div>
     );

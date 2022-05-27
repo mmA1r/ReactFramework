@@ -59,3 +59,19 @@
     transition: 0.1s;
     color: rgb(255, 255, 255);
 }
+
+@media screen and (max-device-width: 480px) {
+    .rulesButton {
+        left: 45%;
+        top: 73%;
+        width: 10%;
+        height: 5%;
+        font-size: 20px;
+    }
+
+    .operandButton {
+        font-size: 20px;
+        width: 100px;
+        height: 45px;
+    }
+}

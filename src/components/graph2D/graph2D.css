@@ -4,3 +4,9 @@
     justify-content: space-around;
     padding-top: 48px;
 }
+
+@media screen and (max-device-width: 480px) {
+    .graph2D {
+        padding-top: 124px;
+    }
+}

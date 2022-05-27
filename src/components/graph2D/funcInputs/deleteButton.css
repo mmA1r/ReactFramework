@@ -8,6 +8,7 @@
     width: 74px;
     margin: 5px 10px 10px 15px;
 }
+
 .deleteButton:hover {
     background: transparent;
     border-color: #ffded4;

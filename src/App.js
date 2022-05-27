@@ -1,10 +1,10 @@
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { useState } from 'react';
 
 import Header from './components/header/Header';
 import Graph2D from './components/graph2D/Graph2D';
 import Calculator from './components/calculator/Calculator';
 import Graph3D from './components/graph3D/Graph3D';
-//import Game from './components/game/Game';
 
 import './App.css';
 
@@ -32,7 +32,6 @@ function App() {
         activePage === 'calculator' ? <Calculator></Calculator> :
           activePage === 'graph2D' ? <Graph2D></Graph2D> :
             activePage === 'graph3D' ? <Graph3D></Graph3D> : ''
-        //activePage === 'game' ? <Game></Game> : ''
       }
     </div>
   );
