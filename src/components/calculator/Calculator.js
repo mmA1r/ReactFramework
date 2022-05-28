@@ -1,9 +1,10 @@
+import { useRef, useState } from 'react';
+
 import UniversalCalculator from '../../modules/calculator/UniversalCalculator';
 
 import './calculator.css';
 import './buttons.css'
 import './inputs.css'
-import { useRef, useState } from 'react';
 
 function Calculator() {
 
@@ -64,6 +65,7 @@ function Calculator() {
                     onClick={() => setShowRules(!showRules)}
                 >Rules</button>
                 <div className={showRules ? 'rules act' : 'rules'}>
+                    {/*eslint-disable */}
                     <a>
                         <h4>Text input rules:</h4>
                         Real ( 1 )<br></br>
@@ -72,6 +74,7 @@ function Calculator() {
                         Matrix  ( 1, 2 /n 3, 4 )<br></br>
                         Polynomials ( 1*x^2+/-2*x^3 )
                     </a>
+                    {/*eslint-enable */}
                 </div>
             </div>
         </div>

@@ -2,7 +2,7 @@ import { Complex, Vector, Matrix } from './types';
 import { RealCalculator, ComplexCalculator, VectorCalculator, MatrixCalculator } from './calculators';
 import Polynomial from '../polynomial/types/Polynomial';
 import Member from '../polynomial/types/Member';
-import PolynomialCalculator from '../polynomial/PolynomialCalculator';
+//import PolynomialCalculator from '../polynomial/PolynomialCalculator';
 
 class UniversalCalculator {
     /* Переводы из строки в соответствующий тип */
@@ -38,7 +38,7 @@ class UniversalCalculator {
         if (typeof str == 'number') return new Complex(str);
         if (str && typeof str == 'string') {
             const arrStr = str.split('i*');
-            if (arrStr.length == 2) {
+            if (arrStr.length === 2) {
                 if (arrStr[0].includes('+')) {
                     const arrRe = arrStr[0].split('+');
                     return new Complex(arrRe[0] - 0, arrStr[1] - 0);
@@ -49,7 +49,7 @@ class UniversalCalculator {
                 }
                 return null;
             }
-            if (arrStr.length == 1) {
+            if (arrStr.length === 1) {
                 if (isNaN(arrStr - 0)) { return null }
                 return new Complex(arrStr[0] - 0)
             }
@@ -113,10 +113,10 @@ class UniversalCalculator {
         if (elem instanceof Complex) {
             return new ComplexCalculator();
         }
-        if (elem instanceof Polynomial) {
-            return new PolynomialCalculator();
-        }
-        return new RealCalculator;
+        // if (elem instanceof Polynomial) {
+        //     return new PolynomialCalculator();
+        // }
+        return new RealCalculator();
     }
 
     add(a, b) {
@@ -150,6 +150,7 @@ class UniversalCalculator {
 
     zero(type, elem) {
         type = type ? type : elem ? elem.constructor.name : null;
+        // eslint-disable-next-line
         switch (type) {
             case 'Complex': return this.get(this.complex()).zero();
             case 'Vector': return this.get(this.vector()).zero(elem.values.length);
@@ -160,6 +161,7 @@ class UniversalCalculator {
 
     one(type, elem) {
         type = type ? type : elem ? elem.constructor.name : null;
+        // eslint-disable-next-line
         switch (type) {
             case 'Complex': return this.get(this.complex()).one();
             case 'Vector': return this.get(this.vector()).one(elem.values.length);

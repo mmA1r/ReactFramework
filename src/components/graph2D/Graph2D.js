@@ -20,17 +20,19 @@ function Graph2D() {
     const funcs = [];
     let derevativeX = 0;
     let canMove = false;
-    let checked = false;
 
     useEffect(() => {
+        /*eslint-disable */
         canvas = new Canvas({
             id: 'graph2DCanvas',
             WIN,
         });
+
         math = new Math2D({
             WIN,
             canvas
         });
+        /*eslint-enable */
         const animLoop = () => {
             run();
             window.requestAnimFrame(animLoop);
@@ -164,10 +166,6 @@ function Graph2D() {
                 }
             }
         });*/
-    }
-
-    const check = () => {
-        return checked ? !checked : checked;
     }
 
     return (

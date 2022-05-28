@@ -1,38 +1,34 @@
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+
 import Button from "./button/Button";
 import "./header.css"
 
 function Header(props) {
-    const { activePage, setActiveButton } = props;
+    const { ROUTES } = props;
+
+    const [activePage, setActivePage] = useState(ROUTES.GRAPH2D.path);
+
+    const navigate = useNavigate();
 
     return (
         <div
             key={activePage}
             className="header"
         >
-            <Button // calculator
-                title="Calculator"
-                name="calculator"
-                onClick={(name) => setActiveButton(name)}
-                active={activePage}
-            ></Button>
-            <Button // Graph2D
-                title="Graph2D"
-                name="graph2D"
-                onClick={(name) => setActiveButton(name)}
-                active={activePage}
-            ></Button>
-            <Button // Graph3d
-                title="Graph3D"
-                name="graph3D"
-                onClick={(name) => setActiveButton(name)}
-                active={activePage}
-            ></Button>
-            {/* <Button // Billiards
-                title = "Game"
-                name = "game"
-                onClick = {(name) => this.setActiveButton(name)}
-                active = { this.state.activePage }
-            ></Button> */}
+            {Object.values(ROUTES).map(route => 
+                route.path !== ROUTES.MAIN.path ?
+                <Button
+                    key={route.path}
+                    onClick={setActivePage}
+                    isActive={activePage}
+                    path={route.path}
+                    title={route.title}
+                ></Button> : '')}
+            <div
+                className="button"
+                onClick={()=> navigate(-1)}
+            >Back</div>
         </div>
     );
 }

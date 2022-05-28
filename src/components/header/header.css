@@ -8,3 +8,31 @@
 
     z-index: 1;
 }
+
+.button {
+    margin: auto;
+    width: 120px;
+    height: 36px;
+    padding-top: 12px;
+
+    border-bottom: solid 1px #36405f;
+    background: linear-gradient(180deg, rgba(131, 157, 204, 0.37) 0%, rgba(137, 171, 211, 0.178) 100%);
+
+    color: #36405f;
+
+    user-select: none;
+}
+
+.button:hover {
+    border-color: #ffdbca;
+    color: #ffdbca;
+
+    transition: 0.3s;
+}
+
+.button:active {
+    border-color: #caf3ff;
+    color: #caf3ff;
+
+    transition: 0s;
+}

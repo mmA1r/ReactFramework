@@ -1,10 +1,11 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { useState } from 'react';
+//import { useState } from 'react';
 
 import Header from './components/header/Header';
 import Graph2D from './components/graph2D/Graph2D';
 import Calculator from './components/calculator/Calculator';
 import Graph3D from './components/graph3D/Graph3D';
+import ROUTES from './components/routes/Routes'
 
 import './App.css';
 
@@ -20,19 +21,18 @@ window.requestAnimFrame = (() => {
 })();
 
 function App() {
-  const [activePage, setActiveButton] = useState('graph2D');
-
+  
   return (
     <div className="App">
-      <Header
-        activePage={activePage}
-        setActiveButton={setActiveButton}
-      ></Header>
-      {
-        activePage === 'calculator' ? <Calculator></Calculator> :
-          activePage === 'graph2D' ? <Graph2D></Graph2D> :
-            activePage === 'graph3D' ? <Graph3D></Graph3D> : ''
-      }
+      <BrowserRouter>
+        <Header ROUTES={ROUTES}/>
+        <Routes>
+          <Route exact path={ROUTES.MAIN.path} element={<Graph2D></Graph2D>}/>
+          <Route exact path={ROUTES.CALCULATOR.path} element={<Calculator></Calculator>}/>
+          <Route exact path={ROUTES.GRAPH2D.path} element={<Graph2D></Graph2D>}/>
+          <Route exact path={ROUTES.GRAPH3D.path} element={<Graph3D></Graph3D>}/>
+        </Routes>
+      </BrowserRouter>
     </div>
   );
 }

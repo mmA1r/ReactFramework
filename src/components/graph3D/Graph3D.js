@@ -192,6 +192,7 @@ function Graph3D() {
     ];
 
     useEffect(() => {
+        /*eslint-disable */
         canvas = new Canvas({
             id: 'graph3DCanvas',
             WIN: WIN,
@@ -203,7 +204,7 @@ function Graph3D() {
 
         LIGHT = new Light(-70, 2, 0, 300000);
         SUNLIGHT = new Light(0, 0, 0, 300000);
-
+        /*eslint-enable */
         const animLoop = () => {
             // print scene
             if (isAnimationAllow) {
@@ -287,7 +288,7 @@ function Graph3D() {
     }
 
     const keyDownHandler = (e) => {
-        //eslint-disable-next-lin
+        // eslint-disable-next-line
         switch (e.keyCode) {
             case 65: // key a
                 return transformCamera(math.rotateOx(-Math.PI / 180));
@@ -313,7 +314,6 @@ function Graph3D() {
     }
 
     const mouseMove = (e) => {
-        console.log(e)
         if (canMove) {
             const gradus = Math.PI / 960;
             transformCamera(math.rotateOy((dy - e.nativeEvent.offsetY) * gradus));
