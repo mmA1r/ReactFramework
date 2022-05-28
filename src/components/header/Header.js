@@ -12,10 +12,7 @@ function Header(props) {
     const navigate = useNavigate();
 
     return (
-        <div
-            key={activePage}
-            className="header"
-        >
+        <div className="header">
             {Object.values(ROUTES).map(route => 
                 route.path !== ROUTES.MAIN.path ?
                 <Button

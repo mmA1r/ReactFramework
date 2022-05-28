@@ -1,0 +1,6 @@
+.NotFoundPage {
+    height: 1000px;
+    background-color: aqua;
+
+    z-index: 4;
+}
