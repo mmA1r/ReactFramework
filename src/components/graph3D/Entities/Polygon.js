@@ -20,6 +20,7 @@ class Polygon {
             b: parseInt(result[3], 16)
         } : {r: 0, g: 0, b: 0};
     }
+    
     rgbToHex(r, g, b) {
         return `rgb(${r}, ${g}, ${b})`;
     }

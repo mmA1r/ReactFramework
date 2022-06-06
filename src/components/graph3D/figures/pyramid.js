@@ -2,7 +2,6 @@ import Subject from '../Entities/Subject';
 import Point from '../Entities/Point';
 import Edge from '../Entities/Edge';
 import Polygon from '../Entities/Polygon';
-import FigureAnimation from '../Entities/FigureAnimation';
 
 function pyramid (count = 6) {
     const edges = [];
@@ -39,14 +38,7 @@ function pyramid (count = 6) {
     for(let i = 1; i <= count; i++) { basePolygons.push(i) }
     polygons.push(new Polygon(basePolygons));
 
-    //animation
-    const animation = [
-        new FigureAnimation('rotateOy' , Math.PI / 180),
-        new FigureAnimation('rotateOx', Math.PI / 180),
-        new FigureAnimation('rotateOz', Math.PI / 180),
-    ];
-
-    return new Subject(points, edges, polygons, 'pyramid', animation);
+    return new Subject(points, edges, polygons, 'pyramid');
 }
 
 export default pyramid;
